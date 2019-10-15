@@ -9,7 +9,7 @@ public class SimpleSquare{
 	//create instances
 	EasyReader read = new EasyReader();
 	// read the length of window
-	read.readInt("please input the length of window")
+	read.readInt("please input the length of window");
 	EasyGraphics g  = new EasyGraphics(500,500);
 	
 	

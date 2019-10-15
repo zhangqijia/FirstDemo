@@ -1,0 +1,30 @@
+Salary
+1000
+Rent
+500
+Electric Bill
+100
+Beer
+45
+Food
+63
+Gift
+100
+More Beer
+85
+Food
+85
+Tram Ticket
+40
+Salary
+1000
+Rent
+500
+Car Tax
+140
+Food
+78
+Wine and Beer
+95
+Coffee
+4.75
