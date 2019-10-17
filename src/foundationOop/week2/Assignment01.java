@@ -1,6 +1,5 @@
 package foundationOop.week2;
 
-import org.junit.Test;
 import sheffield.EasyReader;
 
 import java.io.*;
@@ -15,7 +14,6 @@ public class Assignment01 {
     private static final String GIFT = "Gift";
 
     public static void main(String[] args) {
-
         //init balance
         double balance = 0;
 
@@ -26,7 +24,7 @@ public class Assignment01 {
             fileWriter = createWriter();
 
             //write the first line
-            fileWriter.write("Transaction" + "\tValue" + "\tBalance\n");
+            fileWriter.write(String.format("%-25s %10s %10s %n", "Transaction", "Value", "Balance"));
 
             //Read filename
             String fileName = reader.readString("please type in full file path and name: ");
@@ -47,11 +45,15 @@ public class Assignment01 {
                 } else {
                     realAmount = 0 - Double.valueOf(amount);
                 }
+
                 //calculate balance and write one line
                 balance += realAmount;
-                fileWriter.write(transactionType + "\t" + realAmount + "\t" + balance + "\n");
-            }
 
+                //for String type add whitespace to keep lines tidy, for Double type reserve two decimal fractions and ensure the length
+                String formatted = String.format("%-25s %10.2f %10.2f %n", transactionType, realAmount, balance);
+                fileWriter.write(formatted);
+            }
+            System.out.println("create output file successfully");
         } catch (IOException e) {
             System.err.println("create output file failed");
             e.printStackTrace();
@@ -65,14 +67,14 @@ public class Assignment01 {
         }
     }
 
+    /**
+     * create File writer stream
+     *
+     * @return
+     */
     private static Writer createWriter() {
         String fileName = "output.txt";
-//        File file = new File(fileName);
-//        if (!file.exists()){
-//            file.createNewFile();
-//        }
         BufferedWriter bufferedWriter = null;
-
         try {
             bufferedWriter = new BufferedWriter(new FileWriter(fileName));
         } catch (IOException e) {
@@ -81,28 +83,5 @@ public class Assignment01 {
             System.exit(0);
         }
         return bufferedWriter;
-    }
-
-
-    @Test
-    public void test01(){
-        System.out.println(String.format("name is  %32.9s", "12313"));
-        System.out.println(String.format("name is  %f",   32.0));
-        System.out.println(String.format("name is  %8f",   32.123));
-        System.out.println(String.format("name is  %8s",   32.123));
-        System.out.println(String.format("name is  %32.7g",   32.12312217));
-        System.out.println(String.format("name is  %32.9f",   32.123122112362));
-
-    }
-
-    @Test
-    public void test02(){
-        System.out.println(String.format("name is 23232 %-32s", "12313"));
-        System.out.println(String.format("name is 22 %-32f",   32.0));
-        System.out.println(String.format("name is 5435345345 %-32f",   32.123));
-        System.out.println(String.format("name is 43443 %-32s",   32.123));
-        System.out.println(String.format("name is  345345 %-32.7g",   32.12312217));
-        System.out.println(String.format("name is  4535345 %-32.9f",   32.123122112362));
-
     }
 }
