@@ -7,19 +7,41 @@ public class JugTest {
         Jug jug2 = new Jug(2);
         Jug jug5 = new Jug(5);
 
-        jug2.fill();
-        jug3.fill();
+//        jug2.fill();
+//        jug3.fill();
+//
+//        jug2.pourInto(jug5);
+//        jug3.pourInto(jug5);
+//
+//        jug5.display();
+//
+//        jug5.pourInto(jug2);
+//        jug5.display();
+//
+//        jug5.pourInto(jug3);
+//        jug5.display();
+//
+//        jug3.empty();
+//        jug3.display();
 
-        jug2.pourInto(jug5);
-        jug3.pourInto(jug5);
-
-        jug5.display();
-
-        jug5.pourInto(jug2);
+        jug5.fill();
         jug5.display();
 
         jug5.pourInto(jug3);
         jug5.display();
+
+        jug3.empty();
+        jug5.pourInto(jug3);
+
+        jug5.display();
+        jug3.display();
+
+        jug5.fill();
+
+        jug5.pourInto(jug3);
+
+        jug5.display();
+        jug3.display();
 
     }
 }
