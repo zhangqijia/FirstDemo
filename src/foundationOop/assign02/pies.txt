@@ -1,0 +1,76 @@
+name:
+Steak and Mushroom
+price:
+8.95
+ingredients:
+Beef Steak
+Mushroom (vv)
+Suet Pastry
+Beef Stock
+
+name:
+Leek and Cheese
+price:
+7.95
+ingredients:
+Leek (vv)
+Cheddar (v)
+Stilton (v)
+Cream (v)
+
+name:
+Faux Steak
+price:
+7.95
+ingredients:
+Quorn (vv)
+Mushroom (vv)
+Soy Sauce (vv)
+
+name:
+Beef Pie
+price:
+2.10
+ingredients:
+Beef
+Onion (vv)
+Potato (vv)
+
+name:
+Chicken and Mushroom
+price:
+5.8
+ingredients:
+Chicken
+Mushroom (vv)
+Cream (v)
+
+name:
+Traditiional Pasty
+price:
+9.9
+ingredients:
+Beef
+Potato (vv)
+Carrot (vv)
+Onion (vv)
+Swede (vv)
+Turnip (vv)
+
+name:
+Pizza Roll
+price:
+2.99
+ingredients:
+Cheese (v)
+Tomato (vv)
+Onion (vv)
+
+name:
+Mushroom Vergas Bake
+price:
+2.99
+ingredients:
+Mushroom (vv)
+Onion (vv)
+Carrot (vv)
