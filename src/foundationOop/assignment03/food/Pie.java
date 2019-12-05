@@ -7,7 +7,7 @@ import java.util.ArrayList;
 /**
  * Pie object
  */
-public class Pie extends Food{
+public class Pie extends Meal{
 
     private String name;
     private double price;

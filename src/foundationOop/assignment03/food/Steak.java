@@ -1,4 +1,4 @@
 package foundationOop.assignment03.food;
 
-public class Steak extends Food {
+public class Steak extends Meal {
 }
