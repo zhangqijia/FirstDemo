@@ -1,96 +1,28 @@
 package foundationOop.assignment03.food;
 
-import foundationOop.assignment03.Ingredient;
+import foundationOop.assignment03.Menu;
+import foundationOop.assignment03.drink.Beer;
+import foundationOop.assignment03.drink.Drink;
+import foundationOop.assignment03.drink.WhiteWine;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Pie object
  */
-public class Pie extends Meal{
-
-    private String name;
-    private double price;
-    private ArrayList<Ingredient> ingredients;
+public class Pie extends Meal {
 
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public ArrayList<Ingredient> getIngredients() {
-        return ingredients;
-    }
-
-    public void setIngredients(ArrayList<Ingredient> ingredients) {
-        this.ingredients = ingredients;
-    }
-
-    public Pie() {
-    }
-
-    public Pie(String name, double price, ArrayList<Ingredient> ingredients) {
-        this.name = name;
-        this.price = price;
-        this.ingredients = ingredients;
-    }
-
-    /**
-     * is or not vegetarian
-     *
-     * @return true value indicates this pie is vegetarian
-     */
-    public boolean isVegetarian() {
-        for (Ingredient ingredient : ingredients) {
-            // if one ingredients is not vegetarian, return false
-            if (!ingredient.isVegetarian()) {
-                return false;
+    @Override
+    public Drink drinksRecommendation() {
+        List<Drink> drinkList = Menu.getDrinkList();
+        for (Drink drink : drinkList) {
+            if (drink instanceof Beer) {
+                return drink;
             }
         }
-        return true;
-    }
-
-    /**
-     * is or not vegan
-     *
-     * @return true value indicates this pie is vegan
-     */
-    public boolean isVegan() {
-        for (Ingredient ingredient : ingredients) {
-            // if one ingredients is not vegetarian, return false
-            if (!ingredient.isVegan()) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * check whether the pie uses this ingredient
-     *
-     * @param ingredient the name of ingredient
-     * @return true: contains this ingredient
-     */
-    public boolean contains(String ingredient) {
-        for (Ingredient raw : ingredients) {
-            String name = raw.getName();
-            if (name.equals(ingredient)) {
-                return true;
-            }
-        }
-        return false;
+        return null;
     }
 
     /**
@@ -100,12 +32,14 @@ public class Pie extends Meal{
      */
     public String printf() {
         StringBuffer stringBuffer = new StringBuffer();
-        stringBuffer.append("### ").append(name).append("       ").append("*").append("£").append(price).append("*").append(System.lineSeparator())
+        stringBuffer.append("### ").append(getName()).append("       ").append("*").append("£").append(getPrice()).append("*").append(System.lineSeparator())
                 .append("ingredients: ");
-        for (Ingredient ingredient : ingredients) {
+        for (Ingredient ingredient : getIngredientMap().keySet()) {
             stringBuffer.append(ingredient.getName()).append(", ");
         }
         stringBuffer.replace(stringBuffer.length() - 1, stringBuffer.length(), System.lineSeparator());
         return stringBuffer.toString();
     }
+
+
 }

@@ -1,0 +1,195 @@
+name:
+Beef Steak
+cost:
+12.00/kg
+amount:
+20kg
+
+name:
+Mushroom (vv)
+cost:
+8.18/kg
+amount:
+5kg
+
+name:
+Suet Pastry
+cost:
+8.98/kg
+amount:
+10kg
+
+name:
+Beef Stock
+cost:
+1.98/kg
+amount:
+10kg
+
+name:
+Leek (vv)
+cost:
+7.98/kg
+amount:
+10kg
+
+name:
+Cheddar (v)
+cost:
+8.98/kg
+amount:
+10kg
+
+name:
+Cream (v)
+cost:
+9.98/kg
+amount:
+10kg
+
+name:
+Quorn (vv)
+cost:
+4.98/kg
+amount:
+10kg
+
+name:
+Soy Sauce (vv)
+cost:
+3.98/kg
+amount:
+10kg
+
+name:
+Beef
+cost:
+8.98/kg
+amount:
+40kg
+
+name:
+Onion (vv)
+cost:
+2.98/kg
+amount:
+100kg
+
+name:
+Potato (vv)
+cost:
+1.98/kg
+amount:
+200kg
+
+name:
+Chicken
+cost:
+6.98/kg
+amount:
+100kg
+
+name:
+Salmon
+cost:
+28.98/kg
+amount:
+10kg
+
+name:
+Cod
+cost:
+13.98/kg
+amount:
+10kg
+
+name:
+Fillet Beef Steak
+cost:
+28.98/kg
+amount:
+20kg
+
+name:
+Rump Beef Steak
+cost:
+15.98/kg
+amount:
+60kg
+
+name:
+Sirloin Beef Steak
+cost:
+20.98/kg
+amount:
+90kg
+
+name:
+Stella Lager
+cost:
+8.98/kg
+amount:
+1000kg
+
+name:
+Corona Lager
+cost:
+13.98/kg
+amount:
+1000kg
+
+name:
+DOMAINE LAFRAN
+cost:
+268/kg
+amount:
+1.5kg
+
+name:
+Grahams Six Grapes Port
+cost:
+19.65/kg
+amount:
+80kg
+
+name:
+Yellow Tail Chardonnay
+cost:
+12.05/kg
+amount:
+100kg
+
+name:
+Chardonnay di Montemaggio
+cost:
+26.39/kg
+amount:
+20kg
+
+name:
+Coca-Cola
+cost:
+3.97/kg
+amount:
+500kg
+
+name:
+Zero Coca-Cola
+cost:
+2.81/kg
+amount:
+500kg
+
+name:
+Spring Water
+cost:
+3.00/kg
+amount:
+1500kg
+
+name:
+Tap Water
+cost:
+0.00/kg
+amount:
+3000kg

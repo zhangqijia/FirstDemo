@@ -1,251 +1,331 @@
 package foundationOop.assignment03;
 
-import foundationOop.assignment03.food.Pie;
+import foundationOop.assignment03.constant.IngredientType;
+import foundationOop.assignment03.drink.*;
+import foundationOop.assignment03.food.*;
 import sheffield.EasyReader;
 
-import java.io.*;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.List;
 
 /**
- * Format menu
+ * create today's menu by recipe.
  */
 public class Menu {
 
-    private static final Pattern pattern = Pattern.compile("(\\w+)\\s+\\((\\w+)\\)");
+    /**
+     * pie list
+     */
+    private static List<Meal> pieList = new ArrayList<>();
+    /**
+     * fish list
+     */
+    private static List<Meal> fishList = new ArrayList<>();
+    /**
+     * steak list
+     */
+    private static List<Meal> steakList = new ArrayList<>();
+    /**
+     * drink list
+     */
+    private static List<Drink> drinkList = new ArrayList<>();
 
     /**
-     * format new version menu, nice presentation and beautiful
-     *
-     * @param menuPath original menu path
+     * print all menu in the console
      */
-    public void formatMenu(String menuPath) {
+    public void display() {
+        System.out.println("Opening! The menu is below");
+        // the line used to separate contents
+        String separatorLine = "+----------------------------------------+----------+--------------------------------------------------+";
+        System.out.println(separatorLine);
+        // justify every string to a formatted string
+        String rightJustified = "|%40s|%10s|%50s|";
 
-        // create file reader and writer
-        BufferedWriter writer = getBufferedWriter();
-        BufferedReader reader = getBufferedReader(menuPath);
+        String format = String.format(rightJustified, "", "price", "ingredients");
+        System.out.println(format + "\n" + separatorLine);
 
-        // create three types of pie lists
-        ArrayList<Pie> meatPies = new ArrayList<>();
-        ArrayList<Pie> vegetarianPies = new ArrayList<>();
-        ArrayList<Pie> veganPies = new ArrayList<>();
+        // 1. print pies
+        format = String.format(rightJustified, "Pies ************", "------", "------");
+        System.out.println(format + "\n" + separatorLine);
 
+        StringBuilder vegetarianPieStr = new StringBuilder();
+        StringBuilder veganPieStr = new StringBuilder();
+        for (Meal meal : pieList) {
+            format = String.format(rightJustified, meal.getName(), "£" + meal.getPrice(), meal.getIngredientStr());
+            format = format + "\n" + separatorLine;
+            if (meal.isVegetarian()) {
+                vegetarianPieStr.append(format).append("\n");
+                if (meal.isVegan()) {
+                    veganPieStr.append(format).append("\n");
+                }
+            } else {
+                // 1.1 print every common pie.
+                System.out.println(format);
+            }
+        }
+        // 1.2 print vegetarian pies
+        format = String.format(rightJustified, "Vegetarian Pies ************", "------", "------");
+        System.out.println(format + "\n" + separatorLine);
+        System.out.print(vegetarianPieStr);
+        // 1.3 print vegan pies
+        format = String.format(rightJustified, "Vegan Pies ************", "------", "------");
+        System.out.println(format + "\n" + separatorLine);
+        System.out.print(veganPieStr);
+        //2. print fish list
+        printOneTypeMealList(separatorLine, rightJustified, "Fishes ************", fishList);
+        //3. print steak list
+        printOneTypeMealList(separatorLine, rightJustified, "Steak ************", steakList);
+        //4. print drink list
+        printDrinkList(separatorLine, rightJustified, "Drinks ************", drinkList);
+
+    }
+
+    /**
+     * print one type of meal list;
+     * because pies should be divided by different type, this method cannot be used to pies.
+     *
+     * @param separatorLine  ---
+     * @param rightJustified formatTemplate
+     * @param typeTitle      meal type title
+     * @param mealList       meal list
+     */
+    private void printOneTypeMealList(String separatorLine, String rightJustified, String typeTitle, List<Meal> mealList) {
+        String format;
+        format = String.format(rightJustified, typeTitle, "------", "------");
+        System.out.println(format + "\n" + separatorLine);
+        for (Meal meal : mealList) {
+            format = String.format(rightJustified, meal.getName(), "£" + meal.getPrice(), meal.getIngredientStr());
+            format = format + "\n" + separatorLine;
+            //print every meal.
+            System.out.println(format);
+        }
+    }
+
+    private void printDrinkList(String separatorLine, String rightJustified, String typeTitle, List<Drink> drinkList) {
+        String format;
+        format = String.format(rightJustified, typeTitle, "------", "------");
+        System.out.println(format + "\n" + separatorLine);
+        for (Drink drink : drinkList) {
+            format = String.format(rightJustified, drink.getName(), "£" + drink.getPrice(), drink.getIngredientStr());
+            format = format + "\n" + separatorLine;
+            //print every meal.
+            System.out.println(format);
+        }
+    }
+
+    /**
+     * load ingredients into Stock.
+     * and load today's recipes.
+     */
+    public void load() {
+        System.out.println("Welcome! Our restaurant is preparing... Please wait a moment...");
+        EasyReader ingredientReader = new EasyReader("C:\\Users\\ZhangQijia\\IdeaProjects\\FirstDemo\\src\\foundationOop\\assignment03\\recipe\\ingredientList.txt");
+        EasyReader pieReader = new EasyReader("C:\\Users\\ZhangQijia\\IdeaProjects\\FirstDemo\\src\\foundationOop\\assignment03\\recipe\\pies.txt");
+        EasyReader fishReader = new EasyReader("C:\\Users\\ZhangQijia\\IdeaProjects\\FirstDemo\\src\\foundationOop\\assignment03\\recipe\\fish.txt");
+        EasyReader steakReader = new EasyReader("C:\\Users\\ZhangQijia\\IdeaProjects\\FirstDemo\\src\\foundationOop\\assignment03\\recipe\\steak.txt");
+        EasyReader drinkReader = new EasyReader("C:\\Users\\ZhangQijia\\IdeaProjects\\FirstDemo\\src\\foundationOop\\assignment03\\recipe\\drinks.txt");
+        // save ingredients into stock
+        while (!ingredientReader.eof()) {
+            String s = ingredientReader.readString();
+            if (s.equals("name:")) {
+                this.readIngredient(ingredientReader);
+            }
+        }
+        loadRecipesByType(pieReader, pieList, "pie");
+        loadRecipesByType(fishReader, fishList, "fish");
+        loadRecipesByType(steakReader, steakList, "steak");
         try {
-            String line;
-            // repeat reading every line 
-            a:
-            while (true) {
-                line = reader.readLine();
-                // stop at the end of the file
-                if (line == null)
-                    break;
-                // name: means the start of one pie content
-                if (line.trim().equals("name:")) {
-                    Pie pie = new Pie();
-                    ArrayList<Ingredient> ingredients = new ArrayList<>();
-                    pie.setIngredients(ingredients);
-                    String name = reader.readLine();
-                    pie.setName(name);
-                    while ((line = reader.readLine()) != null) {
-                        // kick off whitespace in line
-                        switch (line.trim()) {
-                            // find price part
-                            case "price:":
-                                double price = Double.parseDouble(reader.readLine());
-                                pie.setPrice(price);
-                                break;
-                            //find ingredients part
-                            case "ingredients:":
-                                // read ingredients until whitespace line or file end
-                                String ingredientLine;
-                                while (true) {
-                                    ingredientLine = reader.readLine();
-                                    // a null line means the end of the file
-                                    if (ingredientLine == null) {
-                                        classifyPie(meatPies, vegetarianPies, veganPies, pie);
-                                        continue a;
-                                    }
-                                    // if the line is not whitespace line
-                                    if (!ingredientLine.trim().isEmpty()) {
-                                        // extract ingredient's name and type
-                                        Matcher matcher = pattern.matcher(ingredientLine);
-                                        Ingredient ingredient;
-                                        // if ingredient is v or vv
-                                        if (matcher.find()) {
-                                            String rawName = matcher.group(1);
-                                            String type = matcher.group(2);
-                                            if ("vv".equals(type)) {
-                                                ingredient = new Ingredient(rawName, true, true);
-                                            } else {
-                                                ingredient = new Ingredient(rawName, true, false);
-                                            }
-                                            // ingredient is neither v nor vv
-                                        } else {
-                                            ingredient = new Ingredient(ingredientLine);
-                                        }
-                                        ingredients.add(ingredient);
-                                        // whitespace line after ingredients means the end of one kind of pie
-                                    } else {
-                                        classifyPie(meatPies, vegetarianPies, veganPies, pie);
-                                        continue a;
-                                    }
-                                }
-                        }
-                    }
+            loadDrinkList(drinkReader);
+            ingredientReader.close();
+            pieReader.close();
+            fishReader.close();
+            steakReader.close();
+            drinkReader.close();
+        } catch (IOException e) {
+            System.err.println("close inputStream error");
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * load drinks from drink list file.
+     *
+     * @param drinkReader the input stream
+     */
+    private void loadDrinkList(EasyReader drinkReader) {
+        while (!drinkReader.eof()) {
+            Drink drink = null;
+            // name
+            String name = drinkReader.readString();
+            if ("name:".equals(name)) {
+                name = drinkReader.readString();
+            }
+            if (name.contains("Beer")) {
+                drink = new Beer();
+            } else if (name.contains("White Wine")) {
+                drink = new WhiteWine();
+            } else if (name.contains("Red Wine")) {
+                drink = new RedWine();
+            } else {
+                drink = new SoftDrink();
+            }
+            drink.setName(name);
+
+            // ingredients
+            drinkReader.readString();
+            boolean reading = true;
+            while (reading) {
+                String s = drinkReader.readString();
+                if (s.equals("name:")) {
+                    drinkList.add(drink);
+                    reading = false;
+                } else {
+                    int i = s.lastIndexOf(" ");
+                    double weight = 0;
+                    weight = Double.parseDouble(s.substring(i + 1).replace("kg", ""));
+                    String ingredientName = s.substring(0, i);
+                                /*find this ingredient from stock
+                                you can't get ingredient's detail from recipes,
+                                you should find it from Stock List
+                                 */
+                    Ingredient ingredient = Stock.searchIngredientDetail(ingredientName);
+                    drink.addIngredient(ingredient, weight);
+                }
+                if (drinkReader.eof()) {
+                    drinkList.add(drink);
+                    reading = false;
                 }
             }
+        }
+    }
 
-            // print out different types of pies in different parts
-            writer.write("# Meat" + System.lineSeparator());
-            for (Pie meatPie : meatPies) {
-                // format pies content and write into file
-                writer.write(meatPie.printf());
+    /**
+     * load different kinds of meal recipes to menu's meal list based on their types.
+     *
+     * @param mealReader the fileReader
+     * @param mealList   the meal list in menu
+     * @param type       the meal type
+     */
+    private void loadRecipesByType(EasyReader mealReader, List<Meal> mealList, String type) {
+        while (!mealReader.eof()) {
+            Meal meal = null;
+
+            // name
+            String name = mealReader.readString();
+            if ("name:".equals(name)) {
+                name = mealReader.readString();
             }
-            writer.write("# Vegetarian" + System.lineSeparator());
-            for (Pie vegetarianPie : vegetarianPies) {
-                writer.write(vegetarianPie.printf());
+            if (type.equals("pie")) {
+                meal = new Pie();
+            } else if (type.equals("fish")) {
+                meal = new Fish();
+            } else if (type.equals("steak")) {
+                meal = new Steak();
             }
-            writer.write("# Vegan" + System.lineSeparator());
-            for (Pie veganPie : veganPies) {
-                writer.write(veganPie.printf());
+            meal.setName(name);
+            if (name.equals("Chicken and Mushroom")) {
+                System.out.println("---");
             }
-            System.out.println("please check your new menu 'newMenu.md' !");
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.err.println("create new Menu error");
-        } finally {
-            try {
-                writer.close();
-                reader.close();
-            } catch (IOException e) {
-                e.printStackTrace();
+            // ingredients
+            mealReader.readString();
+            boolean reading = true;
+            while (reading) {
+                String s = mealReader.readString();
+                if (s.equals("name:")) {
+                    mealList.add(meal);
+                    reading = false;
+                } else {
+                    int i = s.lastIndexOf(" ");
+                    double weight = 0;
+                    weight = Double.parseDouble(s.substring(i + 1).replace("kg", ""));
+                    String ingredientName = s.substring(0, i);
+                                /*find this ingredient from stock
+                                you can't get ingredient's detail from recipes,
+                                you should find it from Stock List
+                                 */
+                    Ingredient ingredient = Stock.searchIngredientDetail(ingredientName);
+                    meal.addIngredient(ingredient, weight);
+                }
+                if (mealReader.eof()) {
+                    mealList.add(meal);
+                    reading = false;
+                }
             }
         }
     }
 
     /**
-     * put pie into according list
+     * encapsulate one ingredient to Stock by reading from file
      *
-     * @param meatPies       list1
-     * @param vegetarianPies list2
-     * @param veganPies      list3
-     * @param pie            pie
+     * @param easyReader
      */
-    private void classifyPie(ArrayList<Pie> meatPies, ArrayList<Pie> vegetarianPies, ArrayList<Pie> veganPies, Pie pie) {
-        if (pie.isVegan()) {
-            veganPies.add(pie);
-        } else if (pie.isVegetarian()) {
-            vegetarianPies.add(pie);
+    private void readIngredient(EasyReader easyReader) {
+        String name;
+        double cost;
+        IngredientType type;
+        Ingredient ingredient;
+        double amount;
+        name = easyReader.readString();
+        easyReader.readString();
+        String costPerUnit = easyReader.readString();
+        cost = Double.parseDouble(costPerUnit.split("/")[0]);
+        easyReader.readString();
+        String weight = easyReader.readString();
+        amount = Double.parseDouble(weight.replace("kg", ""));
+        if (name.contains("(vv)")) {
+            type = IngredientType.VEGAN;
+        } else if (name.contains("(v)")) {
+            type = IngredientType.VEGETARIAN;
         } else {
-            meatPies.add(pie);
+            type = IngredientType.MEAT;
         }
+        ingredient = new Ingredient(name, cost, type);
+        Stock.addIngredient(ingredient, amount);
     }
 
     /**
-     * create file reader
+     * get one meal instance by mealName
      *
-     * @param menuPath file path
-     * @return reader stream
+     * @param mealName mealName
+     * @return Meal
      */
-    private BufferedReader getBufferedReader(String menuPath) {
-        try {
-            return new BufferedReader(new InputStreamReader(new FileInputStream(menuPath)));
-        } catch (FileNotFoundException e) {
-            System.err.println("create reader failed");
-            System.exit(0);
+    public Meal getMeal(String mealName) {
+        for (Meal meal : pieList) {
+            if (meal.getName().equals(mealName)) {
+                return meal;
+            }
+        }
+        for (Meal meal : steakList) {
+            if (meal.getName().equals(mealName)) {
+                return meal;
+            }
+        }
+        for (Meal meal : fishList) {
+            if (meal.getName().equals(mealName)) {
+                return meal;
+            }
         }
         return null;
     }
 
     /**
-     * create file writer
+     * get Drink instance by name
      *
-     * @return writer stream
+     * @param drinkName drinkname
+     * @return drink
      */
-    private BufferedWriter getBufferedWriter() {
-        BufferedWriter writer = null;
-        try {
-            // create write file
-            File file = new File("newMenu.md");
-            if (!file.exists()) {
-                file.createNewFile();
+    public Drink getDrink(String drinkName) {
+        for (Drink drink : drinkList) {
+            if (drink.getName().equals(drinkName)) {
+                return drink;
             }
-            writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file)));
-        } catch (IOException e) {
-            System.err.println("create writer failed");
-            System.exit(0);
         }
-        return writer;
+        return null;
     }
 
-
-    public void formatMenu2(String menuPath) {
-
-        // create file reader and writer
-        BufferedWriter writer = getBufferedWriter();
-        EasyReader easyReader = new EasyReader(menuPath);
-
-        // create three types of pie lists
-        ArrayList<Pie> meatPies = new ArrayList<>();
-        ArrayList<Pie> vegetarianPies = new ArrayList<>();
-        ArrayList<Pie> veganPies = new ArrayList<>();
-
-        try {
-            Pie pie = new Pie();
-            while (true) {
-                String line = easyReader.readString();
-                if (easyReader.eof()) {
-                    break;
-                }
-                if ("name:".equals(line)) {
-                    pie.setName(easyReader.readString());
-                }
-                if ("price:".equals(line)) {
-                    pie.setPrice(Double.valueOf(easyReader.readLine()));
-                }
-                if ("ingredients:".equals(line)) {
-                    ArrayList<Ingredient> ingredients = new ArrayList<>();
-                    while (true) {
-                        line = easyReader.readLine();
-                        if ("".equals(line)) {
-                            pie.setIngredients(ingredients);
-                            meatPies.add(pie);
-                            pie = new Pie();
-                            break;
-                        }
-                        Ingredient ingredient = new Ingredient(line);
-                        ingredients.add(ingredient);
-                    }
-                }
-            }
-
-
-            // print out different types of pies in different parts
-            writer.write("# Meat" + System.lineSeparator());
-            for (Pie meatPie : meatPies) {
-                // format pies content and write into file
-                writer.write(meatPie.printf());
-            }
-            writer.write("# Vegetarian" + System.lineSeparator());
-            for (Pie vegetarianPie : vegetarianPies) {
-                writer.write(vegetarianPie.printf());
-            }
-            writer.write("# Vegan" + System.lineSeparator());
-            for (Pie veganPie : veganPies) {
-                writer.write(veganPie.printf());
-            }
-            System.out.println("please check your new menu 'newMenu.md' !");
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.err.println("create new Menu error");
-        } finally {
-            try {
-                writer.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+    public static List<Drink> getDrinkList() {
+        return drinkList;
     }
 
 

@@ -7,6 +7,9 @@ public class MealBox {
 
     private Meal meal;
     private Drink drink;
+
+
+
 }
 
 
