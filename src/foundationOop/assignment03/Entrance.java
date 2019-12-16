@@ -1,12 +1,38 @@
 package foundationOop.assignment03;
 
-import foundationOop.assignment03.constant.IngredientType;
 import foundationOop.assignment03.drink.Drink;
-import foundationOop.assignment03.food.Ingredient;
 import foundationOop.assignment03.food.Meal;
-import foundationOop.assignment03.food.Pie;
 import sheffield.EasyReader;
 
+/**
+ * this is the Entrance of the restaurant.
+ * In the main() method,
+ * it will create a Menu instance and invoke load() and display() method.
+ * <p>
+ * load() method is to read today's meal list, drink list, ingredient list from files in recipe folder and
+ * assign these contents to Menu instance fields and Stock class fields.
+ * These files' content can be modified according to the real demands of the restaurant.
+ * For example, the type and quantity of ingredients this restaurant purchased might be varied with the season.
+ * <p>
+ * display() method prints whole menu out in the console by a readable format.
+ * <p>
+ * after that, I simulate an order process.
+ * Firstly, Users can order one kind of  meal in this menu and provide how many meals they want.
+ * If the ingredients of this meal are enough, the order process will move to next stage.
+ * <p>
+ * Based on the meal ordered previously, console will print a recommended drink got by invoking drinksRecommendation() in Meal.
+ * <p>
+ * Then, users can choose one kind of drink and type in the number they want.
+ * Similarly, we should check stock by Stock class method.
+ * <p>
+ * After order is finished, the console will give the total price of the order.
+ * This price is calculate by the cost of ingredients in every meal and drink.
+ * Additionally, The price of one meal add extra 20% of the cost of ingredients to cover staff costs etc..
+ * <p>
+ * If users agree to pay what they have ordered, the Stock will reduce the ingredients used by this order.
+ * <p>
+ * When you exit the program, it will print today's remaining Stock information.
+ */
 public class Entrance {
     public static void main(String[] args) {
 
@@ -20,7 +46,7 @@ public class Entrance {
         //1. print whole menu
         menu.display();
 
-        // the process of shopping starts
+        // the process of ordering starts
         while (true) {
             //2. prompt what meal do you want to order
             Meal meal = null;
@@ -32,8 +58,11 @@ public class Entrance {
                 if (meal == null) {
                     System.err.println("Sorry, we don't have this meal. Please check the menu.");
                 } else {
+                    System.err.println("This is the meal's detail:   ");
+                    System.out.println(meal);
                     // 2.1 the count of meal
-                    mealCount = easyReader.readInt("Got it! Then how many meals do you want?\n");
+                    System.err.println("Got it! Then how many meals do you want?");
+                    mealCount = easyReader.readInt();
                     // 2.3 check whether we have enough stock
                     boolean mealAvailable = Stock.checkMealIngredients(meal, mealCount);
                     if (!mealAvailable) {
