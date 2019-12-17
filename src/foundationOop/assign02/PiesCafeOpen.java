@@ -14,7 +14,7 @@ public class PiesCafeOpen {
         String menuPath = scanner.next();
 
         // format original menu to a nice presentation format
-        new Menu().formatMenu2(menuPath);
+        new restaurant.Menu().formatMenu2(menuPath);
 
         System.out.println("Welcome to Pies Care!!! :) ");
     }*/

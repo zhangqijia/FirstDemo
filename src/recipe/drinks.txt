@@ -1,0 +1,49 @@
+name:
+Stella Lager Beer
+ingredients:
+Stella Lager 0.5kg
+
+name:
+Corona Lager Beer
+ingredients:
+Corona Lager 0.5kg
+
+name:
+DOMAINE LAFRAN Red Wine
+ingredients:
+DOMAINE LAFRAN 0.37kg
+
+name:
+Grapes Port Red Wine
+ingredients:
+Grahams Six Grapes Port 0.3kg
+
+name:
+Chardonnay White Wine
+ingredients:
+Yellow Tail Chardonnay 0.3kg
+
+name:
+Montemaggio White Wine
+ingredients:
+Chardonnay di Montemaggio 0.3kg
+
+name:
+Coca-Cola
+ingredients:
+Coca-Cola 0.5kg
+
+name:
+Zero Coca-Cola
+ingredients:
+Zero Coca-Cola 0.5kg
+
+name:
+Spring Water
+ingredients:
+Spring Water 0.5kg
+
+name:
+Tap Water
+ingredients:
+Tap Water 0.5kg
