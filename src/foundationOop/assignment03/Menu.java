@@ -5,9 +5,11 @@ import foundationOop.assignment03.drink.*;
 import foundationOop.assignment03.food.*;
 import sheffield.EasyReader;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * create today's menu by recipe.
@@ -92,6 +94,154 @@ public class Menu {
     }
 
     /**
+     * load ingredients into Stock.
+     * and load today's recipes into Menu.
+     */
+    public void load() {
+        System.out.println("Welcome! Our restaurant is preparing... Please wait a moment...");
+        String path = "U:\\ManW10\\Downloads\\myjava\\src\\foundationOop\\assignment03";
+        // create readers to read all files
+        EasyReader ingredientReader = new EasyReader(path +"/recipe/ingredientList.txt");
+        EasyReader pieReader = new EasyReader(path +"/recipe/pies.txt");
+        EasyReader fishReader = new EasyReader(path +"/recipe/fish.txt");
+        EasyReader steakReader = new EasyReader(path +"/recipe/steak.txt");
+        EasyReader drinkReader = new EasyReader(path +"/recipe/drinks.txt");
+        // save ingredients into stock
+        while (!ingredientReader.eof()) {
+            String s = ingredientReader.readString();
+            if (s.equals("name:")) {
+                // "name" String means a start of a ingredient, so read the detail of this ingredient and add it into Stock
+                this.readIngredient(ingredientReader);
+            }
+        }
+        // load all meals and drinks into Menu instance fields.
+        loadRecipesByType(pieReader, pieList, "pie");
+        loadRecipesByType(fishReader, fishList, "fish");
+        loadRecipesByType(steakReader, steakList, "steak");
+        loadDrinkList(drinkReader);
+        try {
+            // close all reader stream
+            ingredientReader.close();
+            pieReader.close();
+            fishReader.close();
+            steakReader.close();
+            drinkReader.close();
+        } catch (IOException e) {
+            System.err.println("close inputStream error");
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * load drinks from drink list file.
+     *
+     * @param drinkReader the input stream
+     */
+    private void loadDrinkList(EasyReader drinkReader) {
+        while (!drinkReader.eof()) {
+            Drink drink = null;
+            // read name
+            String name = drinkReader.readString();
+            if ("name:".equals(name)) {
+                name = drinkReader.readString();
+            }
+            if (name.contains("Beer")) {
+                drink = new Beer();
+            } else if (name.contains("White Wine")) {
+                drink = new WhiteWine();
+            } else if (name.contains("Red Wine")) {
+                drink = new RedWine();
+            } else {
+                drink = new SoftDrink();
+            }
+            drink.setName(name);
+
+            // read ingredients of drink
+            drinkReader.readString();
+            // declare a boolean to control the loop for reading ingredients
+            boolean reading = true;
+            while (reading) {
+                String s = drinkReader.readString();
+                // when program reads another "name", that means another start of a meal, so end this loop.
+                if (s.equals("name:")) {
+                    drinkList.add(drink);
+                    reading = false;
+                } else {
+                    int i = s.lastIndexOf(" ");
+                    double weight = 0;
+                    weight = Double.parseDouble(s.substring(i + 1).replace("kg", ""));
+                    String ingredientName = s.substring(0, i);
+                    Ingredient ingredient = Stock.searchIngredientDetail(ingredientName);
+                    drink.addIngredient(ingredient, weight);
+                }
+                // if it is the end of file, stop this loop.
+                if (drinkReader.eof()) {
+                    drinkList.add(drink);
+                    reading = false;
+                }
+            }
+        }
+    }
+
+    /**
+     * load different kinds of meal recipes to menu's meal list based on their types.
+     *
+     * @param mealReader the fileReader
+     * @param mealList   the meal list in menu
+     * @param type       the meal type
+     */
+    private void loadRecipesByType(EasyReader mealReader, List<Meal> mealList, String type) {
+        while (!mealReader.eof()) {
+            Meal meal = null;
+            // read name
+            String name = mealReader.readString();
+            if ("name:".equals(name)) {
+                name = mealReader.readString();
+            }
+            /* the superclass of these kinds of meals are the same one.
+             * So, meal can be assigned to Pie, Fish, Steak's reference.
+             */
+            if (type.equals("pie")) {
+                meal = new Pie();
+            } else if (type.equals("fish")) {
+                meal = new Fish();
+            } else if (type.equals("steak")) {
+                meal = new Steak();
+            }
+            meal.setName(name);
+            // read ingredients
+            mealReader.readString();
+            // declare a boolean to control the loop for reading ingredients
+            boolean reading = true;
+            while (reading) {
+                // when read another "name" String, that means another start of a meal, so end this loop.
+                String s = mealReader.readString();
+                if (s.equals("name:")) {
+                    mealList.add(meal);
+                    reading = false;
+                } else {
+                    // get ingredient's name and quantity
+                    int i = s.lastIndexOf(" ");
+                    double weight = 0;
+                    weight = Double.parseDouble(s.substring(i + 1).replace("kg", ""));
+                    String ingredientName = s.substring(0, i);
+                    /* find this ingredient from stock, because you can't get ingredient's detail from recipes.
+                     *  You should find it from Stock's ingredients List
+                     */
+                    Ingredient ingredient = Stock.searchIngredientDetail(ingredientName);
+                    // save this ingredient into meal instance
+                    meal.addIngredient(ingredient, weight);
+                }
+                // if it is the end of file, stop this loop.
+                if (mealReader.eof()) {
+                    mealList.add(meal);
+                    reading = false;
+                }
+            }
+        }
+    }
+
+    /**
      * print one type of meal list;
      * because pies should be divided by different type, this method cannot be used to pies.
      *
@@ -112,6 +262,14 @@ public class Menu {
         }
     }
 
+    /**
+     * print drink list;
+     *
+     * @param separatorLine  ---
+     * @param rightJustified formatTemplate
+     * @param typeTitle      drink type title，if you want to print drinks into different type, assign this variable.
+     * @param drinkList      drink list
+     */
     private void printDrinkList(String separatorLine, String rightJustified, String typeTitle, List<Drink> drinkList) {
         String format;
         format = String.format(rightJustified, typeTitle, "------", "------");
@@ -125,150 +283,9 @@ public class Menu {
     }
 
     /**
-     * load ingredients into Stock.
-     * and load today's recipes.
-     */
-    public void load() {
-        System.out.println("Welcome! Our restaurant is preparing... Please wait a moment...");
-        EasyReader ingredientReader = new EasyReader("C:\\Users\\ZhangQijia\\IdeaProjects\\FirstDemo\\src\\foundationOop\\assignment03\\recipe\\ingredientList.txt");
-        EasyReader pieReader = new EasyReader("C:\\Users\\ZhangQijia\\IdeaProjects\\FirstDemo\\src\\foundationOop\\assignment03\\recipe\\pies.txt");
-        EasyReader fishReader = new EasyReader("C:\\Users\\ZhangQijia\\IdeaProjects\\FirstDemo\\src\\foundationOop\\assignment03\\recipe\\fish.txt");
-        EasyReader steakReader = new EasyReader("C:\\Users\\ZhangQijia\\IdeaProjects\\FirstDemo\\src\\foundationOop\\assignment03\\recipe\\steak.txt");
-        EasyReader drinkReader = new EasyReader("C:\\Users\\ZhangQijia\\IdeaProjects\\FirstDemo\\src\\foundationOop\\assignment03\\recipe\\drinks.txt");
-        // save ingredients into stock
-        while (!ingredientReader.eof()) {
-            String s = ingredientReader.readString();
-            if (s.equals("name:")) {
-                this.readIngredient(ingredientReader);
-            }
-        }
-        loadRecipesByType(pieReader, pieList, "pie");
-        loadRecipesByType(fishReader, fishList, "fish");
-        loadRecipesByType(steakReader, steakList, "steak");
-        try {
-            loadDrinkList(drinkReader);
-            ingredientReader.close();
-            pieReader.close();
-            fishReader.close();
-            steakReader.close();
-            drinkReader.close();
-        } catch (IOException e) {
-            System.err.println("close inputStream error");
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * load drinks from drink list file.
+     * encapsulate one ingredient to Stock by reading contents from file
      *
-     * @param drinkReader the input stream
-     */
-    private void loadDrinkList(EasyReader drinkReader) {
-        while (!drinkReader.eof()) {
-            Drink drink = null;
-            // name
-            String name = drinkReader.readString();
-            if ("name:".equals(name)) {
-                name = drinkReader.readString();
-            }
-            if (name.contains("Beer")) {
-                drink = new Beer();
-            } else if (name.contains("White Wine")) {
-                drink = new WhiteWine();
-            } else if (name.contains("Red Wine")) {
-                drink = new RedWine();
-            } else {
-                drink = new SoftDrink();
-            }
-            drink.setName(name);
-
-            // ingredients
-            drinkReader.readString();
-            boolean reading = true;
-            while (reading) {
-                String s = drinkReader.readString();
-                if (s.equals("name:")) {
-                    drinkList.add(drink);
-                    reading = false;
-                } else {
-                    int i = s.lastIndexOf(" ");
-                    double weight = 0;
-                    weight = Double.parseDouble(s.substring(i + 1).replace("kg", ""));
-                    String ingredientName = s.substring(0, i);
-                                /*find this ingredient from stock
-                                you can't get ingredient's detail from recipes,
-                                you should find it from Stock List
-                                 */
-                    Ingredient ingredient = Stock.searchIngredientDetail(ingredientName);
-                    drink.addIngredient(ingredient, weight);
-                }
-                if (drinkReader.eof()) {
-                    drinkList.add(drink);
-                    reading = false;
-                }
-            }
-        }
-    }
-
-    /**
-     * load different kinds of meal recipes to menu's meal list based on their types.
-     *
-     * @param mealReader the fileReader
-     * @param mealList   the meal list in menu
-     * @param type       the meal type
-     */
-    private void loadRecipesByType(EasyReader mealReader, List<Meal> mealList, String type) {
-        while (!mealReader.eof()) {
-            Meal meal = null;
-
-            // name
-            String name = mealReader.readString();
-            if ("name:".equals(name)) {
-                name = mealReader.readString();
-            }
-            if (type.equals("pie")) {
-                meal = new Pie();
-            } else if (type.equals("fish")) {
-                meal = new Fish();
-            } else if (type.equals("steak")) {
-                meal = new Steak();
-            }
-            meal.setName(name);
-            if (name.equals("Chicken and Mushroom")) {
-                System.out.println("---");
-            }
-            // ingredients
-            mealReader.readString();
-            boolean reading = true;
-            while (reading) {
-                String s = mealReader.readString();
-                if (s.equals("name:")) {
-                    mealList.add(meal);
-                    reading = false;
-                } else {
-                    int i = s.lastIndexOf(" ");
-                    double weight = 0;
-                    weight = Double.parseDouble(s.substring(i + 1).replace("kg", ""));
-                    String ingredientName = s.substring(0, i);
-                                /*find this ingredient from stock
-                                you can't get ingredient's detail from recipes,
-                                you should find it from Stock List
-                                 */
-                    Ingredient ingredient = Stock.searchIngredientDetail(ingredientName);
-                    meal.addIngredient(ingredient, weight);
-                }
-                if (mealReader.eof()) {
-                    mealList.add(meal);
-                    reading = false;
-                }
-            }
-        }
-    }
-
-    /**
-     * encapsulate one ingredient to Stock by reading from file
-     *
-     * @param easyReader
+     * @param easyReader the input stream
      */
     private void readIngredient(EasyReader easyReader) {
         String name;
@@ -283,6 +300,7 @@ public class Menu {
         easyReader.readString();
         String weight = easyReader.readString();
         amount = Double.parseDouble(weight.replace("kg", ""));
+        // judge the ingredient's type
         if (name.contains("(vv)")) {
             type = IngredientType.VEGAN;
         } else if (name.contains("(v)")) {
@@ -334,6 +352,11 @@ public class Menu {
         return null;
     }
 
+    /**
+     * get Drink list in Menu
+     *
+     * @return drink list
+     */
     public static List<Drink> getDrinkList() {
         return drinkList;
     }

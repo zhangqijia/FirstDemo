@@ -33,40 +33,6 @@ abstract public class Meal {
         this.name = name;
     }
 
-    /**
-     * get the price of this meal
-     *
-     * @return the price of meal
-     */
-    public double price() {
-        // if price has not been assigned 
-        if (price == 0) {
-            this.calculatePrice();
-        }
-        return price;
-    }
-
-    /**
-     * calculate the Meal's price based on the ingredients price and amount
-     * add 20% cost for staff salary
-     * and the price ceil and keep two fractions.
-     */
-    private void calculatePrice() {
-        double mealPrice = 0;
-        // sum all cost of ingredients
-        for (Map.Entry<Ingredient, Double> entry : ingredientMap.entrySet()) {
-            Ingredient ingredient = entry.getKey();
-            Double amount = entry.getValue();
-            double cost = ingredient.getCost();
-            mealPrice = mealPrice + (cost * amount);
-        }
-        // add a 20% markup to cover staff costs.
-        double v = mealPrice * 1.2;
-        // ceil and keep two decimal fractions
-        v = Math.ceil(v * 100) / 100;
-        this.price = v;
-    }
-
     public double getPrice() {
         // if price has not been assigned
         if (price == 0) {
@@ -129,6 +95,40 @@ abstract public class Meal {
     }
 
     /**
+     * get the price of this meal
+     *
+     * @return the price of meal
+     */
+    public double price() {
+        // if price has not been assigned
+        if (price == 0) {
+            this.calculatePrice();
+        }
+        return price;
+    }
+
+    /**
+     * calculate the Meal's price based on the ingredients price and amount
+     * add 20% cost for staff salary
+     * and the price ceil and keep two fractions.
+     */
+    private void calculatePrice() {
+        double mealPrice = 0;
+        // sum all cost of ingredients
+        for (Map.Entry<Ingredient, Double> entry : ingredientMap.entrySet()) {
+            Ingredient ingredient = entry.getKey();
+            Double amount = entry.getValue();
+            double cost = ingredient.getCost();
+            mealPrice = mealPrice + (cost * amount);
+        }
+        // add a 20% markup to cover staff costs.
+        double v = mealPrice * 1.2;
+        // ceil and keep two decimal fractions
+        v = Math.ceil(v * 100) / 100;
+        this.price = v;
+    }
+
+    /**
      * check whether the pie uses this ingredient
      *
      * @param ingredient the name of ingredient
@@ -144,15 +144,31 @@ abstract public class Meal {
         return false;
     }
 
+    /**
+     * @return the recommended drink based on the type of meal.
+     */
     public abstract Drink drinksRecommendation();
 
     @Override
     public String toString() {
-        return "Meal{" +
-                "name='" + name + '\'' +
-                ", price=" + price +
-                ", ingredientMap=" + ingredientMap +
-                '}';
+        StringBuilder builder = new StringBuilder();
+        String printName = String.format("%40s", this.getName());
+        builder.append("|           ").append("Name:").append("            |")
+                .append(printName).append("|").append("\n");
+        builder.append("+---------------------------------------------------------------------+\n");
+        printName = "         Ingredients:       ";
+        for (Ingredient ingredient : ingredientMap.keySet()) {
+            String ingredientName = String.format("%40s", ingredient.getName());
+            builder.append("|").append(printName).append("|")
+                    .append(ingredientName).append("|\n");
+            printName = String.format("%28s", "");
+        }
+        builder.append("+---------------------------------------------------------------------+\n");
+        String isVegetarian = String.format("%40b", isVegetarian());
+        builder.append("|       IsVegetarian:        |").append(isVegetarian).append("|\n");
+        String isVegan = String.format("%40b", isVegan());
+        builder.append("|       IsVegan:             |").append(isVegan).append("|");
+        return builder.toString();
     }
 
     public String getIngredientStr() {
