@@ -35,7 +35,17 @@ public class Menu {
      * print all menu in the console
      */
     public void display() {
-        System.out.println("Opening! The menu is below");
+        System.err.print("Opening! The menu is below");
+        for (int i = 0; i < 11; i++) {
+            try {
+                System.err.print(".");
+                if (i == 10)
+                    System.out.println();
+                Thread.sleep(150);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         // the line used to separate contents
         String separatorLine = "+----------------------------------------+----------+--------------------------------------------------+";
         System.out.println(separatorLine);
@@ -46,7 +56,7 @@ public class Menu {
         System.out.println(format + "\n" + separatorLine);
 
         // 1. print pies
-        format = String.format(rightJustified, "Pies ************", "------", "------");
+        format = String.format(rightJustified, "Pies ************************", "------", "------");
         System.out.println(format + "\n" + separatorLine);
 
         StringBuilder vegetarianPieStr = new StringBuilder();
@@ -65,19 +75,19 @@ public class Menu {
             }
         }
         // 1.2 print vegetarian pies
-        format = String.format(rightJustified, "Vegetarian Pies ************", "------", "------");
+        format = String.format(rightJustified, "Vegetarian Pies ************************", "------", "------");
         System.out.println(format + "\n" + separatorLine);
         System.out.print(vegetarianPieStr);
         // 1.3 print vegan pies
-        format = String.format(rightJustified, "Vegan Pies ************", "------", "------");
+        format = String.format(rightJustified, "Vegan Pies ************************", "------", "------");
         System.out.println(format + "\n" + separatorLine);
         System.out.print(veganPieStr);
         //2. print fish list
-        printOneTypeMealList(separatorLine, rightJustified, "Fishes ************", fishList);
+        printOneTypeMealList(separatorLine, rightJustified, "Fishes ************************", fishList);
         //3. print steak list
-        printOneTypeMealList(separatorLine, rightJustified, "Steak ************", steakList);
+        printOneTypeMealList(separatorLine, rightJustified, "Steak ************************", steakList);
         //4. print drink list
-        printDrinkList(separatorLine, rightJustified, "Drinks ************", drinkList);
+        printDrinkList(separatorLine, rightJustified, "Drinks ************************", drinkList);
 
     }
 

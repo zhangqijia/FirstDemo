@@ -1,10 +1,7 @@
 package foundationOop.assignment03;
 
-import foundationOop.assignment03.constant.IngredientType;
 import foundationOop.assignment03.drink.Drink;
-import foundationOop.assignment03.food.Ingredient;
 import foundationOop.assignment03.food.Meal;
-import foundationOop.assignment03.food.Pie;
 import sheffield.EasyReader;
 
 public class Entrance {
@@ -16,7 +13,7 @@ public class Entrance {
 
         //0. load today's ingredients and recipes
         menu.load();
-
+        Stock.printf();
         //1. print whole menu
         menu.display();
 
@@ -64,7 +61,7 @@ public class Entrance {
                     //3.2 ensure the count of drink
                     drinkCount = easyReader.readInt("Got it! Then how many cups of drink do you want? \n");
                     //3.3 check whether we have enough stock
-                    boolean available = Stock.checkDrinnkIngredients(drink, drinkCount);
+                    boolean available = Stock.checkDrinkIngredients(drink, drinkCount);
                     if (!available) {
                         System.err.println("sorry this drink does not have enough stock, please choose other drink");
                     } else {
@@ -87,8 +84,10 @@ public class Entrance {
                 System.err.println("Thanks for your visiting!");
             }
             //7. thanks for you order, continue shopping or exit.
-            String fin = easyReader.readString("Continuing shopping or exit? \n");
+            String fin = easyReader.readString("Continuing shopping or exit? (any key/exit) \n");
             if ("exit".equals(fin)) {
+                // print today's Stock detail and exit
+                Stock.printf();
                 System.exit(0);
             }
         }

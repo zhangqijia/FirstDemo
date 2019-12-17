@@ -17,12 +17,9 @@ public class Stock {
      */
     private static Map<Ingredient, Double> ingredientStock = new HashMap<>();
 
-    public static Map<Ingredient, Double> getIngredientStock() {
-        return ingredientStock;
-    }
 
     /**
-     * add ingredients into stock
+     * add a ingredient into stock
      *
      * @param ingredient ingredient
      * @param amount     the amount
@@ -42,7 +39,7 @@ public class Stock {
      * find ingredient's detail by name
      *
      * @param ingredientName name of ingredient
-     * @return instance of ingredient
+     * @return instance of ingredient, if cannot find according ingredient, return null
      */
     public static Ingredient searchIngredientDetail(String ingredientName) {
         for (Ingredient ingredient : ingredientStock.keySet()) {
@@ -54,7 +51,7 @@ public class Stock {
     }
 
     /**
-     * check whether restaurant has enough ingredients for this order
+     * check whether restaurant has enough ingredients for this meal
      *
      * @param meal      the meal ordered
      * @param mealCount the count ordered
@@ -73,7 +70,14 @@ public class Stock {
         return true;
     }
 
-    public static boolean checkDrinnkIngredients(Drink drink, int drinkCount) {
+    /**
+     * check whether restaurant has enough ingredients for this drink
+     *
+     * @param drink      drink instance
+     * @param drinkCount the count of drink
+     * @return whether the ingredient of this drink is enough
+     */
+    public static boolean checkDrinkIngredients(Drink drink, int drinkCount) {
         Map<Ingredient, Double> ingredientMap = drink.getIngredientMap();
         for (Map.Entry<Ingredient, Double> entry : ingredientMap.entrySet()) {
             Ingredient ingredient = entry.getKey();
@@ -113,5 +117,24 @@ public class Stock {
             stockAmount = stockAmount - value * count;
             ingredientStock.put(key, stockAmount);
         }
+    }
+
+    /**
+     * print out the detail of Stock
+     */
+    public static void printf() {
+        System.out.println("Today's Stock detail:");
+        ingredientStock.forEach((ingredient, amount) -> {
+            System.out.print(ingredient.getName());
+            for (int i = 0; i < 7; i++) {
+                try {
+                    System.out.print("-");
+                    Thread.sleep(50);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            System.out.println(amount + "kg");
+        });
     }
 }
