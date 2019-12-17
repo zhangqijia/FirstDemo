@@ -14,17 +14,17 @@ ingredients:
 DOMAINE LAFRAN 0.37kg
 
 name:
-Grahams Six Grapes Port Red Wine
+Grapes Port Red Wine
 ingredients:
 Grahams Six Grapes Port 0.3kg
 
 name:
-Yellow Tail Chardonnay White Wine
+Chardonnay White Wine
 ingredients:
 Yellow Tail Chardonnay 0.3kg
 
 name:
-Chardonnay di Montemaggio White Wine
+Chardonnay White Wine
 ingredients:
 Chardonnay di Montemaggio 0.3kg
 

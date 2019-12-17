@@ -3,6 +3,7 @@ package foundationOop.assignment03;
 import foundationOop.assignment03.constant.IngredientType;
 import foundationOop.assignment03.drink.*;
 import foundationOop.assignment03.food.*;
+import foundationOop.assignment03.tool.PrintTools;
 import sheffield.EasyReader;
 
 import java.io.File;
@@ -38,16 +39,9 @@ public class Menu {
      */
     public void display() {
         System.err.print("Opening! The menu is below");
-        for (int i = 0; i < 11; i++) {
-            try {
-                System.err.print(".");
-                if (i == 10)
-                    System.out.println();
-                Thread.sleep(150);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+        // create a loading animation
+        PrintTools.loadingAnimation(".", 150L, 10);
+        System.out.println();
         // the line used to separate contents
         String separatorLine = "+----------------------------------------+----------+--------------------------------------------------+";
         System.out.println(separatorLine);
@@ -58,9 +52,9 @@ public class Menu {
         System.out.println(format + "\n" + separatorLine);
 
         // 1. print pies
-        format = String.format(rightJustified, "Pies ************************", "------", "------");
+        format = String.format(rightJustified, "Pies ************************", "******", "******");
         System.out.println(format + "\n" + separatorLine);
-
+        // firstly, print common pies
         StringBuilder vegetarianPieStr = new StringBuilder();
         StringBuilder veganPieStr = new StringBuilder();
         for (Meal meal : pieList) {
@@ -76,20 +70,26 @@ public class Menu {
                 System.out.println(format);
             }
         }
+        PrintTools.loadingAnimation(null, 150L, 8);
         // 1.2 print vegetarian pies
-        format = String.format(rightJustified, "Vegetarian Pies ************************", "------", "------");
+        format = String.format(rightJustified, "Vegetarian Pies ************************", "******", "******");
         System.out.println(format + "\n" + separatorLine);
         System.out.print(vegetarianPieStr);
+        PrintTools.loadingAnimation(null, 150L, 6);
         // 1.3 print vegan pies
-        format = String.format(rightJustified, "Vegan Pies ************************", "------", "------");
+        format = String.format(rightJustified, "Vegan Pies ************************", "******", "******");
         System.out.println(format + "\n" + separatorLine);
         System.out.print(veganPieStr);
+        PrintTools.loadingAnimation(null, 150L, 6);
         //2. print fish list
         printOneTypeMealList(separatorLine, rightJustified, "Fishes ************************", fishList);
+        PrintTools.loadingAnimation(null, 150L, 8);
         //3. print steak list
         printOneTypeMealList(separatorLine, rightJustified, "Steak ************************", steakList);
+        PrintTools.loadingAnimation(null, 150L, 8);
         //4. print drink list
         printDrinkList(separatorLine, rightJustified, "Drinks ************************", drinkList);
+        PrintTools.loadingAnimation(null, 150L, 8);
 
     }
 
@@ -99,13 +99,13 @@ public class Menu {
      */
     public void load() {
         System.out.println("Welcome! Our restaurant is preparing... Please wait a moment...");
-        String path = "U:\\ManW10\\Downloads\\myjava\\src\\foundationOop\\assignment03";
+        String path = "C:\\Users\\ZhangQijia\\IdeaProjects\\FirstDemo\\src\\foundationOop\\assignment03\\";
         // create readers to read all files
-        EasyReader ingredientReader = new EasyReader(path +"/recipe/ingredientList.txt");
-        EasyReader pieReader = new EasyReader(path +"/recipe/pies.txt");
-        EasyReader fishReader = new EasyReader(path +"/recipe/fish.txt");
-        EasyReader steakReader = new EasyReader(path +"/recipe/steak.txt");
-        EasyReader drinkReader = new EasyReader(path +"/recipe/drinks.txt");
+        EasyReader ingredientReader = new EasyReader(path + "/recipe/ingredientList.txt");
+        EasyReader pieReader = new EasyReader(path + "/recipe/pies.txt");
+        EasyReader fishReader = new EasyReader(path + "/recipe/fish.txt");
+        EasyReader steakReader = new EasyReader(path + "/recipe/steak.txt");
+        EasyReader drinkReader = new EasyReader(path + "/recipe/drinks.txt");
         // save ingredients into stock
         while (!ingredientReader.eof()) {
             String s = ingredientReader.readString();
@@ -252,7 +252,7 @@ public class Menu {
      */
     private void printOneTypeMealList(String separatorLine, String rightJustified, String typeTitle, List<Meal> mealList) {
         String format;
-        format = String.format(rightJustified, typeTitle, "------", "------");
+        format = String.format(rightJustified, typeTitle, "******", "******");
         System.out.println(format + "\n" + separatorLine);
         for (Meal meal : mealList) {
             format = String.format(rightJustified, meal.getName(), "£" + meal.getPrice(), meal.getIngredientStr());
@@ -272,7 +272,7 @@ public class Menu {
      */
     private void printDrinkList(String separatorLine, String rightJustified, String typeTitle, List<Drink> drinkList) {
         String format;
-        format = String.format(rightJustified, typeTitle, "------", "------");
+        format = String.format(rightJustified, typeTitle, "******", "******");
         System.out.println(format + "\n" + separatorLine);
         for (Drink drink : drinkList) {
             format = String.format(rightJustified, drink.getName(), "£" + drink.getPrice(), drink.getIngredientStr());

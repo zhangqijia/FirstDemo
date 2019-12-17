@@ -3,6 +3,7 @@ package foundationOop.assignment03.food;
 import foundationOop.assignment03.constant.IngredientType;
 import foundationOop.assignment03.drink.Drink;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -100,7 +101,7 @@ abstract public class Meal {
      * @return the price of meal
      */
     public double price() {
-        // if price has not been assigned
+        // if price has not been assigned, calculate the price and assign it to instance variable.
         if (price == 0) {
             this.calculatePrice();
         }
@@ -113,19 +114,19 @@ abstract public class Meal {
      * and the price ceil and keep two fractions.
      */
     private void calculatePrice() {
-        double mealPrice = 0;
+        BigDecimal mealPrice = BigDecimal.ZERO;
         // sum all cost of ingredients
         for (Map.Entry<Ingredient, Double> entry : ingredientMap.entrySet()) {
             Ingredient ingredient = entry.getKey();
             Double amount = entry.getValue();
             double cost = ingredient.getCost();
-            mealPrice = mealPrice + (cost * amount);
+            BigDecimal add = BigDecimal.valueOf(cost).multiply(BigDecimal.valueOf(amount));
+            mealPrice = mealPrice.add(add);
         }
         // add a 20% markup to cover staff costs.
-        double v = mealPrice * 1.2;
+        BigDecimal total = mealPrice.multiply(BigDecimal.valueOf(1.2));
         // ceil and keep two decimal fractions
-        v = Math.ceil(v * 100) / 100;
-        this.price = v;
+        this.price = total.setScale(2, BigDecimal.ROUND_CEILING).doubleValue();
     }
 
     /**
@@ -157,8 +158,8 @@ abstract public class Meal {
                 .append(printName).append("|").append("\n");
         builder.append("+---------------------------------------------------------------------+\n");
         printName = "         Ingredients:       ";
-        for (Ingredient ingredient : ingredientMap.keySet()) {
-            String ingredientName = String.format("%40s", ingredient.getName());
+        for (Map.Entry<Ingredient, Double> entry : ingredientMap.entrySet()) {
+            String ingredientName = String.format("%40s", entry.getKey().getName() + ": " + entry.getValue() + "kg");
             builder.append("|").append(printName).append("|")
                     .append(ingredientName).append("|\n");
             printName = String.format("%28s", "");

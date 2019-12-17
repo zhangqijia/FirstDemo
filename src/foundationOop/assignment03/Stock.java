@@ -3,6 +3,7 @@ package foundationOop.assignment03;
 import foundationOop.assignment03.drink.Drink;
 import foundationOop.assignment03.food.Ingredient;
 import foundationOop.assignment03.food.Meal;
+import foundationOop.assignment03.tool.PrintTools;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -126,14 +127,8 @@ public class Stock {
         System.out.println("Today's Stock detail:");
         ingredientStock.forEach((ingredient, amount) -> {
             System.out.print(ingredient.getName());
-            for (int i = 0; i < 7; i++) {
-                try {
-                    System.out.print("-");
-                    Thread.sleep(50);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
+            // create a loading animation
+            PrintTools.loadingAnimation("-", 50L, 6);
             System.out.println(amount + "kg");
         });
     }

@@ -2,6 +2,7 @@ package foundationOop.assignment03;
 
 import foundationOop.assignment03.drink.Drink;
 import foundationOop.assignment03.food.Meal;
+import foundationOop.assignment03.tool.PrintTools;
 import sheffield.EasyReader;
 
 /**
@@ -42,6 +43,7 @@ public class Entrance {
 
         //0. load today's ingredients and recipes
         menu.load();
+        // print today's ingredients' list of Stock
         Stock.printf();
         //1. print whole menu
         menu.display();
@@ -58,8 +60,10 @@ public class Entrance {
                 if (meal == null) {
                     System.err.println("Sorry, we don't have this meal. Please check the menu.");
                 } else {
-                    System.err.println("This is the meal's detail:   ");
+                    // print the detail of the meal
+                    System.out.println("This is the meal's detail:   ");
                     System.out.println(meal);
+                    PrintTools.loadingAnimation(".", 200L, 3);
                     // 2.1 the count of meal
                     System.err.println("Got it! Then how many meals do you want?");
                     mealCount = easyReader.readInt();
@@ -77,8 +81,10 @@ public class Entrance {
             System.err.println("Would you like some drinks?");
             Drink drinkRecommendation = meal.drinksRecommendation();
             if (drinkRecommendation != null) {
+                PrintTools.loadingAnimation(".", 150L, 6);
                 System.err.println("We highly recommend \"" + drinkRecommendation.getName() + "\" to you!~~");
             }
+            PrintTools.loadingAnimation(".", 150L, 6);
             System.err.println("What do you think? ");
             //3.1 order a drink
             Drink drink = null;
@@ -104,8 +110,9 @@ public class Entrance {
 
             //5. show the price
             System.err.println("You ordered successfully!!! Please pay and get you MealBox!!!");
-            double price = meal.price() * mealCount + drink.price() * drinkCount;
-            System.err.println("The price of your order is: " + price);
+            // print the receipt of this order
+            PrintTools.printReceipt(meal, mealCount, drink, drinkCount);
+            PrintTools.loadingAnimation(".", 200L, 3);
             //6. pay or not?
             String pay = easyReader.readString("Would you like to pay it? (yes/no) \n");
             if ("yes".equals(pay)) {
@@ -118,6 +125,9 @@ public class Entrance {
             //7. thanks for you order, continue shopping or exit.
             String fin = easyReader.readString("Continuing shopping or exit? (any key/exit) \n");
             if ("exit".equals(fin)) {
+                System.out.print("Restaurant is closing");
+                PrintTools.loadingAnimation(".", 180L, 6);
+                System.out.println("Make an inventory of the Stock...");
                 // print today's Stock detail and exit
                 Stock.printf();
                 System.exit(0);
