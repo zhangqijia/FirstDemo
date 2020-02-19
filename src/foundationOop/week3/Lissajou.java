@@ -1,6 +1,6 @@
 package foundationOop.week3;
 
-import sheffield.EasyGraphics;
+import foundationOop.assignment03.sheffield.EasyGraphics;
 
 public class Lissajou {
 

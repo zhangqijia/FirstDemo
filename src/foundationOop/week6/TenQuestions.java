@@ -6,12 +6,12 @@ package foundationOop.week6;
   First written: 15/09/07
 */
 
-import sheffield.*;
+import foundationOop.assignment03.sheffield.EasyReader;
 
 class TenQuestions {
     public static void main(String[] args) {
 
-        // class constant
+        // class foundationOop.assignment03.constant
         final int NUMQUESTIONS = 10;
 
         // class variable

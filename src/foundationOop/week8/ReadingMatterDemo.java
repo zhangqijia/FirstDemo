@@ -1,7 +1,5 @@
 package foundationOop.week8;
 
-import foundationOop.week1.Simple;
-
 public class ReadingMatterDemo {
     public static void main(String[] args) {
 

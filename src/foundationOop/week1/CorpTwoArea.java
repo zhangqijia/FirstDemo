@@ -1,6 +1,7 @@
 package foundationOop.week1;
 
-import sheffield.*;
+import foundationOop.assignment03.sheffield.EasyReader;
+import foundationOop.assignment03.sheffield.EasyWriter;
 
 public class CorpTwoArea{
 	

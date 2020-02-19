@@ -1,6 +1,6 @@
 package foundationOop.assign02;
 
-import sheffield.EasyReader;
+import foundationOop.assignment03.sheffield.EasyReader;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -112,7 +112,7 @@ public class Menu {
             System.out.println("please check your new menu 'newMenu.md' !");
         } catch (IOException e) {
             e.printStackTrace();
-            System.err.println("create new restaurant.Menu error");
+            System.err.println("create new foundationOop.assignment03.restaurant.Menu error");
         } finally {
             try {
                 writer.close();
@@ -237,7 +237,7 @@ public class Menu {
             System.out.println("please check your new menu 'newMenu.md' !");
         } catch (IOException e) {
             e.printStackTrace();
-            System.err.println("create new restaurant.Menu error");
+            System.err.println("create new foundationOop.assignment03.restaurant.Menu error");
         } finally {
             try {
                 writer.close();

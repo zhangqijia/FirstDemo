@@ -1,6 +1,6 @@
 package foundationOop.week3;
 
-import sheffield.EasyReader;
+import foundationOop.assignment03.sheffield.EasyReader;
 
 public class CountAcids {
 

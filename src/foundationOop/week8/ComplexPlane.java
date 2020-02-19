@@ -1,6 +1,6 @@
 package foundationOop.week8;
 
-import sheffield.*;
+import foundationOop.assignment03.sheffield.EasyGraphics;
 
 public class ComplexPlane {
     static final double XSCALE = 100.0;
@@ -11,7 +11,7 @@ public class ComplexPlane {
      * Write a programComplexPlane.java that generates curves using the
      * equation r =  {cos(p) +  i·sin(2p)}·exp(−DECAY*p) +0.01p
      * <p>
-     * where  p  is a parameter and  d   is a constant value.
+     * where  p  is a parameter and  d   is a foundationOop.assignment03.constant value.
      * <p>
      * ComplexPlane.template.java(MOLE) provides the template for this task
      *

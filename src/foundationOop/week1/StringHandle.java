@@ -1,6 +1,6 @@
 package foundationOop.week1;
 
-import sheffield.*;
+import foundationOop.assignment03.sheffield.EasyReader;
 
 public class StringHandle{
 	

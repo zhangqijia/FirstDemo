@@ -8,7 +8,7 @@ package foundationOop.week8;
  * Cleaned up: 31/08/06 by YG
  */
 
-import sheffield.*;
+import foundationOop.assignment03.sheffield.EasyReader;
 
 public class Complex {
 

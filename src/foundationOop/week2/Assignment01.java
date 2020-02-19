@@ -1,8 +1,11 @@
 package foundationOop.week2;
 
-import sheffield.EasyReader;
+import foundationOop.assignment03.sheffield.EasyReader;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 
 /**
  * @author Qijia Zhang

@@ -1,6 +1,6 @@
 package foundationOop.week7;
 
-import sheffield.EasyReader;
+import foundationOop.assignment03.sheffield.EasyReader;
 
 import java.util.ArrayList;
 
