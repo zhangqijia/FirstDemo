@@ -39,12 +39,13 @@ public class ListDemo
 
         // length
 
-        // System.out.println(List.length(p));
-        // System.out.println(List.length(q));
+         System.out.println(List.length(p));
+         System.out.println(List.length(q));
 
         // reversal
 
-        // System.out.println(List.reverse(p));
+        List<String> reverse = List.reverse(p);
+        System.out.println(reverse);
         // System.out.println(List.reverse(q));
 
     }

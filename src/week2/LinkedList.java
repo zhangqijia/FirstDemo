@@ -46,12 +46,15 @@ public class LinkedList<T> {
     private Node after;
 
     public int length() {
-        after = head;
-        if (after == null) {
+        if (head == null) {
             return 0;
         } else {
-            after = after.next;
-            return 1 + length();
+            after = head.next;
+            if (after == null) {
+                return 0;
+            } else {
+                return 1 + length();
+            }
         }
     }
 
@@ -68,5 +71,6 @@ public class LinkedList<T> {
         integerLinkedList.add(9);
         Integer integer = integerLinkedList.get(0);
         System.out.println(integer);
+        System.out.println(integerLinkedList.length());
     }
 }
