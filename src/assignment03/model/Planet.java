@@ -2,12 +2,8 @@ package assignment03.model;
 
 import java.util.Objects;
 
-public class Planet {
+public class Planet extends AstronomicalObject {
     private String name;
-    private Double RA;
-    private Double declination;
-    private Double magnitude;
-    private Double distanceFromEarth;
     private Double albedo;
 
     public Planet() {
@@ -86,5 +82,17 @@ public class Planet {
 
     public void setAlbedo(Double albedo) {
         this.albedo = albedo;
+    }
+
+    @Override
+    public void setProperties(String propertiesStr) throws IllegalArgumentException {
+        // extract properties from String and set them
+        String[] split = propertiesStr.split("\\|");
+        this.setName(split[0].trim());
+        this.setRA(Double.valueOf(split[1].trim()));
+        this.setDeclination(Double.valueOf(split[2].trim()));
+        this.setMagnitude(Double.valueOf(split[3].trim()));
+        this.setDistanceFromEarth(Double.valueOf(split[4].trim()));
+        this.setAlbedo(Double.valueOf(split[5].trim()));
     }
 }

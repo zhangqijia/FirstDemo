@@ -1,6 +1,6 @@
 package assignment03;
 
-import assignment03.inter.SetProperties;
+import assignment03.model.AstronomicalObject;
 
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
@@ -16,13 +16,16 @@ import java.util.List;
  * DATE: 2/23/2020
  * TIME: 5:59 PM
  */
-public class FormattedFileRead<T extends SetProperties> {
+public class FormattedFileRead<T extends AstronomicalObject> {
 
     /**
      * file reader
      */
     private BufferedReader fileReader;
 
+    /**
+     * @param filename the name of file which you want to read
+     */
     public FormattedFileRead(String filename) {
         try {
             fileReader = new BufferedReader(new InputStreamReader(new FileInputStream(filename)));
@@ -33,6 +36,12 @@ public class FormattedFileRead<T extends SetProperties> {
         }
     }
 
+    /**
+     * read file's content to a list which stores according objects described by this file
+     *
+     * @param list  the container list
+     * @param clazz the class of the type which is described in this file
+     */
     public void readFileToList(List<T> list, Class<T> clazz) {
         String line = null;
         try {
@@ -41,16 +50,25 @@ public class FormattedFileRead<T extends SetProperties> {
                 t.setProperties(line);
                 list.add(t);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         } catch (IllegalAccessException e) {
-            e.printStackTrace();
+            System.err.println("read file failed, please check the content of your file");
+            System.exit(0);
         } catch (InstantiationException e) {
-            e.printStackTrace();
+            System.err.println("unmatched class type, please check the type of class is according to your file content");
+            System.exit(0);
+        } catch (IOException e) {
+            System.err.println("read file failed, please check the format of your file");
+            System.exit(0);
+        } finally {
+            try {
+                fileReader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
-    public void readFileToListByProperties(List<T> list, Class<T> clazz) {
+    /*public void readFileToListByProperties(List<T> list, Class<T> clazz) {
         String line = null;
         Field[] fields = clazz.getDeclaredFields();
         PropertyDescriptor[] propertyDescriptors = new PropertyDescriptor[fields.length];
@@ -89,5 +107,5 @@ public class FormattedFileRead<T extends SetProperties> {
         } catch (InvocationTargetException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 }

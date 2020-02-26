@@ -31,9 +31,16 @@ public class AOB<K, V> implements Map<K, V> {
     }
 
     public void readFilesToList(String[] fileNames) {
-        FormattedFileRead<Star> formattedFileRead = new FormattedFileRead<>(fileNames[0]);
-//        formattedFileRead.readFileToList(starList,Star.class);
-        formattedFileRead.readFileToListByProperties(starList, Star.class);
+        if (fileNames.length < 3) {
+            System.err.println("you should give 3 formatted files");
+            System.exit(0);
+        }
+        FormattedFileRead<Star> starFileRead = new FormattedFileRead<>(fileNames[0]);
+        FormattedFileRead<Messier> messierFileRead = new FormattedFileRead<>(fileNames[1]);
+        FormattedFileRead<Planet> planetFileRead = new FormattedFileRead<>(fileNames[2]);
+        starFileRead.readFileToList(starList, Star.class);
+        messierFileRead.readFileToList(messierList, Messier.class);
+        planetFileRead.readFileToList(planetList, Planet.class);
         System.out.println(starList);
     }
 

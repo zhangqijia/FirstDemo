@@ -1,15 +1,9 @@
 package assignment03.model;
 
-import assignment03.inter.SetProperties;
-
 import java.util.Objects;
 
-public class Star implements SetProperties {
+public class Star extends AstronomicalObject {
     private Integer catalogueNumber;
-    private Double RA;
-    private Double declination;
-    private Double magnitude;
-    private Double distanceFromEarth;
     private String starType;
     private String constellation;
 
@@ -103,14 +97,15 @@ public class Star implements SetProperties {
 
 
     @Override
-    public void setProperties(String propertiesStr) {
+    public void setProperties(String propertiesStr) throws IllegalArgumentException {
+        // extract properties from String and set them
         String[] split = propertiesStr.split("\\|");
-        setCatalogueNumber(Integer.valueOf(split[0].trim()));
-        setRA(Double.valueOf(split[1].trim()));
-        setDeclination(Double.valueOf(split[2].trim()));
-        setMagnitude(Double.valueOf(split[3].trim()));
-        setDistanceFromEarth(Double.valueOf(split[4].trim()));
-        setStarType(split[5].trim());
-        setConstellation(split[6].trim());
+        this.setCatalogueNumber(Integer.valueOf(split[0].trim()));
+        this.setRA(Double.valueOf(split[1].trim()));
+        this.setDeclination(Double.valueOf(split[2].trim()));
+        this.setMagnitude(Double.valueOf(split[3].trim()));
+        this.setDistanceFromEarth(Double.valueOf(split[4].trim()));
+        this.setStarType(split[5].trim());
+        this.setConstellation(split[6].trim());
     }
 }

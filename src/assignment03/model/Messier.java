@@ -2,13 +2,9 @@ package assignment03.model;
 
 import java.util.Objects;
 
-public class Messier {
+public class Messier extends AstronomicalObject {
 
     private Integer catalogueNumber;
-    private Double RA;
-    private Double declination;
-    private Double magnitude;
-    private Double distanceFromEarth;
     private String constellation;
     private String description;
 
@@ -98,5 +94,22 @@ public class Messier {
     @Override
     public int hashCode() {
         return Objects.hash(catalogueNumber, RA, declination, magnitude, distanceFromEarth, constellation, description);
+    }
+
+    @Override
+    public void setProperties(String propertiesStr) throws IllegalArgumentException {
+        // extract properties from String and set them
+        String[] split = propertiesStr.split("\\|");
+        this.setCatalogueNumber(Integer.valueOf(split[0].trim()));
+        this.setRA(Double.valueOf(split[1].trim()));
+        this.setDeclination(Double.valueOf(split[2].trim()));
+        this.setMagnitude(Double.valueOf(split[3].trim()));
+        this.setDistanceFromEarth(Double.valueOf(split[4].trim()));
+        this.setConstellation(split[5].trim());
+        // description might be null;
+        String description = split[6];
+        if (description == null)
+            description = "";
+        this.setDescription(description.trim());
     }
 }
