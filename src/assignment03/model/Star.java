@@ -1,10 +1,5 @@
 package assignment03.model;
 
-<<<<<<< HEAD:src/assignment03/model/Star.java
-=======
-import assignment03.function.SetProperties;
-
->>>>>>> 666736168789bb5e6d8d0ebe38c2caa015e42138:UoSDemo/src/assignment03/model/Star.java
 import java.util.Objects;
 
 public class Star extends AstronomicalObject {
@@ -102,15 +97,9 @@ public class Star extends AstronomicalObject {
 
 
     @Override
-    public void setProperties(String propertiesStr) throws IllegalArgumentException {
-        // extract properties from String and set them
-        String[] split = propertiesStr.split("\\|");
-        this.setCatalogueNumber(Integer.valueOf(split[0].trim()));
-        this.setRA(Double.valueOf(split[1].trim()));
-        this.setDeclination(Double.valueOf(split[2].trim()));
-        this.setMagnitude(Double.valueOf(split[3].trim()));
-        this.setDistanceFromEarth(Double.valueOf(split[4].trim()));
-        this.setStarType(split[5].trim());
-        this.setConstellation(split[6].trim());
+    public void setProperties(String[] properties) throws IllegalArgumentException {
+        this.setCatalogueNumber(Integer.valueOf(properties[0].trim()));
+        this.setStarType(properties[5].trim());
+        this.setConstellation(properties[6].trim());
     }
 }

@@ -1,10 +1,6 @@
 package assignment03;
 
-<<<<<<< HEAD:src/assignment03/FormattedFileRead.java
 import assignment03.model.AstronomicalObject;
-=======
-import assignment03.function.SetProperties;
->>>>>>> 666736168789bb5e6d8d0ebe38c2caa015e42138:UoSDemo/src/assignment03/FormattedFileRead.java
 
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
@@ -22,6 +18,8 @@ import java.util.List;
  */
 public class FormattedFileRead<T extends AstronomicalObject> {
 
+    private String lineSeparator;
+
     /**
      * file reader
      */
@@ -35,40 +33,37 @@ public class FormattedFileRead<T extends AstronomicalObject> {
             fileReader = new BufferedReader(new InputStreamReader(new FileInputStream(filename)));
         } catch (FileNotFoundException e) {
             System.err.println("Read file failed");
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
             System.exit(0);
         }
     }
 
     /**
-<<<<<<< HEAD:src/assignment03/FormattedFileRead.java
      * read file's content to a list which stores according objects described by this file
      *
      * @param list  the container list
      * @param clazz the class of the type which is described in this file
-=======
-     * read file info to a T's list, T is the type of a specific class
-     *
-     * @param list
-     * @param clazz
->>>>>>> 666736168789bb5e6d8d0ebe38c2caa015e42138:UoSDemo/src/assignment03/FormattedFileRead.java
      */
     public void readFileToList(List<T> list, Class<T> clazz) {
         String line = null;
         try {
             while ((line = fileReader.readLine()) != null) {
                 T t = clazz.newInstance();
-                t.setProperties(line);
+                // extract properties' array from String
+                t.setProperties(getSplit(line));
                 list.add(t);
             }
         } catch (IllegalAccessException e) {
             System.err.println("read file failed, please check the content of your file");
+            System.err.println(e.getMessage());
             System.exit(0);
         } catch (InstantiationException e) {
             System.err.println("unmatched class type, please check the type of class is according to your file content");
+            System.err.println(e.getMessage());
             System.exit(0);
         } catch (IOException e) {
             System.err.println("read file failed, please check the format of your file");
+            System.err.println(e.getMessage());
             System.exit(0);
         } finally {
             try {
@@ -79,17 +74,26 @@ public class FormattedFileRead<T extends AstronomicalObject> {
         }
     }
 
-<<<<<<< HEAD:src/assignment03/FormattedFileRead.java
-    /*public void readFileToListByProperties(List<T> list, Class<T> clazz) {
-=======
     /**
-     * read file info to a T's list
+     * analyse String and split it by separator.
      *
-     * @param list
-     * @param clazz
+     * @param line the String should be splited.
+     * @return String array
      */
-    public void readFileToListByProperties(List<T> list, Class<T> clazz) {
->>>>>>> 666736168789bb5e6d8d0ebe38c2caa015e42138:UoSDemo/src/assignment03/FormattedFileRead.java
+    private String[] getSplit(String line) {
+        if (lineSeparator == null) {
+            if (line.contains("|")) {
+                lineSeparator = "\\|";
+            } else {
+                lineSeparator = "\\s";
+            }
+        }
+        return line.split(lineSeparator);
+    }
+
+
+
+    /*public void readFileToListByProperties(List<T> list, Class<T> clazz) {
         String line = null;
         Field[] fields = clazz.getDeclaredFields();
         PropertyDescriptor[] propertyDescriptors = new PropertyDescriptor[fields.length];

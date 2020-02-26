@@ -97,17 +97,12 @@ public class Messier extends AstronomicalObject {
     }
 
     @Override
-    public void setProperties(String propertiesStr) throws IllegalArgumentException {
+    public void setProperties(String[] properties) throws IllegalArgumentException {
         // extract properties from String and set them
-        String[] split = propertiesStr.split("\\|");
-        this.setCatalogueNumber(Integer.valueOf(split[0].trim()));
-        this.setRA(Double.valueOf(split[1].trim()));
-        this.setDeclination(Double.valueOf(split[2].trim()));
-        this.setMagnitude(Double.valueOf(split[3].trim()));
-        this.setDistanceFromEarth(Double.valueOf(split[4].trim()));
-        this.setConstellation(split[5].trim());
+        this.setCatalogueNumber(Integer.valueOf(properties[0].trim()));
+        this.setConstellation(properties[5].trim());
         // description might be null;
-        String description = split[6];
+        String description = properties[6];
         if (description == null)
             description = "";
         this.setDescription(description.trim());
