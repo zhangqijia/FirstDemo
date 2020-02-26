@@ -1,6 +1,6 @@
 package assignment03.model;
 
-import assignment03.inter.SetProperties;
+import assignment03.function.SetProperties;
 
 import java.util.Objects;
 

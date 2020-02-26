@@ -1,6 +1,6 @@
 package assignment03;
 
-import assignment03.inter.SetProperties;
+import assignment03.function.SetProperties;
 
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
@@ -33,6 +33,12 @@ public class FormattedFileRead<T extends SetProperties> {
         }
     }
 
+    /**
+     * read file info to a T's list, T is the type of a specific class
+     *
+     * @param list
+     * @param clazz
+     */
     public void readFileToList(List<T> list, Class<T> clazz) {
         String line = null;
         try {
@@ -50,6 +56,12 @@ public class FormattedFileRead<T extends SetProperties> {
         }
     }
 
+    /**
+     * read file info to a T's list
+     *
+     * @param list
+     * @param clazz
+     */
     public void readFileToListByProperties(List<T> list, Class<T> clazz) {
         String line = null;
         Field[] fields = clazz.getDeclaredFields();
