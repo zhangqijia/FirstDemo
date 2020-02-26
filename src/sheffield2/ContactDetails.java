@@ -5,15 +5,21 @@ import java.io.*;
 /**
  * <code>ContactDetails</code> class contains email, tel number and office
  * number
- * 
+ *
  * @author <a href="mailto:sjr@dcs.shef.ac.uk">Steve Renals</a>
  * @version Last modified: <2001-02-02 17:10:53 GMT (sjr)>
  * @see Serializable
  */
-public class ContactDetails implements Serializable
-{
-    public ContactDetails(String e, int tel, int off)
-    {
+public class ContactDetails implements Serializable, Comparable<ContactDetails> {
+    @Override
+    public int compareTo(ContactDetails o) {
+        if (this.getEmailAddress().equals(o.getEmailAddress())){
+
+        }
+        return 0;
+    }
+
+    public ContactDetails(String e, int tel, int off) {
         emailAddress = e;
         telNumber = tel;
         office = off;
@@ -21,54 +27,48 @@ public class ContactDetails implements Serializable
 
     /**
      * Return the email address
-     * 
+     *
      * @return email address as a string
      */
-    public String getEmailAddress()
-    {
+    public String getEmailAddress() {
         return emailAddress;
     }
 
     /**
      * return telephone number
-     * 
+     *
      * @return telephone number as <code>int</code>
      */
-    public int getTelNumber()
-    {
+    public int getTelNumber() {
         return telNumber;
     }
 
     /**
      * return office number
-     * 
+     *
      * @return office number as <code>int</code>
      */
-    public int getOffice()
-    {
+    public int getOffice() {
         return office;
     }
 
     /**
      * Return contact details as a string
-     * 
+     *
      * @return the string
      */
-    public String toString()
-    {
+    public String toString() {
         return emailAddress + ":" + telNumber + ":" + office;
     }
 
     /**
      * Indicate if some other object is equal to this one. Compares email,tel
      * number and office number fields
-     * 
-     * @param obj
-     *            object with shich to compare
+     *
+     * @param obj object with shich to compare
      * @return true if the objects are equal
      */
-    public boolean equals(Object obj)
-    {
+    public boolean equals(Object obj) {
         if (!(obj instanceof ContactDetails))
             return false;
         ContactDetails c = (ContactDetails) obj;

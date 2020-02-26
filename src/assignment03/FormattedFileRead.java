@@ -1,6 +1,10 @@
 package assignment03;
 
+<<<<<<< HEAD:src/assignment03/FormattedFileRead.java
 import assignment03.model.AstronomicalObject;
+=======
+import assignment03.function.SetProperties;
+>>>>>>> 666736168789bb5e6d8d0ebe38c2caa015e42138:UoSDemo/src/assignment03/FormattedFileRead.java
 
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
@@ -37,10 +41,17 @@ public class FormattedFileRead<T extends AstronomicalObject> {
     }
 
     /**
+<<<<<<< HEAD:src/assignment03/FormattedFileRead.java
      * read file's content to a list which stores according objects described by this file
      *
      * @param list  the container list
      * @param clazz the class of the type which is described in this file
+=======
+     * read file info to a T's list, T is the type of a specific class
+     *
+     * @param list
+     * @param clazz
+>>>>>>> 666736168789bb5e6d8d0ebe38c2caa015e42138:UoSDemo/src/assignment03/FormattedFileRead.java
      */
     public void readFileToList(List<T> list, Class<T> clazz) {
         String line = null;
@@ -68,7 +79,17 @@ public class FormattedFileRead<T extends AstronomicalObject> {
         }
     }
 
+<<<<<<< HEAD:src/assignment03/FormattedFileRead.java
     /*public void readFileToListByProperties(List<T> list, Class<T> clazz) {
+=======
+    /**
+     * read file info to a T's list
+     *
+     * @param list
+     * @param clazz
+     */
+    public void readFileToListByProperties(List<T> list, Class<T> clazz) {
+>>>>>>> 666736168789bb5e6d8d0ebe38c2caa015e42138:UoSDemo/src/assignment03/FormattedFileRead.java
         String line = null;
         Field[] fields = clazz.getDeclaredFields();
         PropertyDescriptor[] propertyDescriptors = new PropertyDescriptor[fields.length];

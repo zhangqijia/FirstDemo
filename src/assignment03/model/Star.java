@@ -1,5 +1,10 @@
 package assignment03.model;
 
+<<<<<<< HEAD:src/assignment03/model/Star.java
+=======
+import assignment03.function.SetProperties;
+
+>>>>>>> 666736168789bb5e6d8d0ebe38c2caa015e42138:UoSDemo/src/assignment03/model/Star.java
 import java.util.Objects;
 
 public class Star extends AstronomicalObject {
