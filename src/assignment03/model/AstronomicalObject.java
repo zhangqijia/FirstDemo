@@ -1,5 +1,7 @@
 package assignment03.model;
 
+import java.math.BigDecimal;
+
 /**
  * USER: ZQJ
  * DATE: 2/26/2020
@@ -7,40 +9,40 @@ package assignment03.model;
  */
 public class AstronomicalObject {
 
-    protected Double RA;
-    protected Double declination;
-    protected Double magnitude;
-    protected Double distanceFromEarth;
+    protected BigDecimal RA;
+    protected BigDecimal declination;
+    protected BigDecimal magnitude;
+    protected BigDecimal distanceFromEarth;
 
-    public Double getRA() {
+    public BigDecimal getRA() {
         return RA;
     }
 
-    public void setRA(Double RA) {
+    public void setRA(BigDecimal RA) {
         this.RA = RA;
     }
 
-    public Double getDeclination() {
+    public BigDecimal getDeclination() {
         return declination;
     }
 
-    public void setDeclination(Double declination) {
+    public void setDeclination(BigDecimal declination) {
         this.declination = declination;
     }
 
-    public Double getMagnitude() {
+    public BigDecimal getMagnitude() {
         return magnitude;
     }
 
-    public void setMagnitude(Double magnitude) {
+    public void setMagnitude(BigDecimal magnitude) {
         this.magnitude = magnitude;
     }
 
-    public Double getDistanceFromEarth() {
+    public BigDecimal getDistanceFromEarth() {
         return distanceFromEarth;
     }
 
-    public void setDistanceFromEarth(Double distanceFromEarth) {
+    public void setDistanceFromEarth(BigDecimal distanceFromEarth) {
         this.distanceFromEarth = distanceFromEarth;
     }
 
@@ -50,10 +52,10 @@ public class AstronomicalObject {
      * @param properties formatted String
      */
     public void setProperties(String[] properties) throws IllegalArgumentException {
-        this.setRA(Double.valueOf(properties[1].trim()));
-        this.setDeclination(Double.valueOf(properties[2].trim()));
-        this.setMagnitude(Double.valueOf(properties[3].trim()));
-        this.setDistanceFromEarth(Double.valueOf(properties[4].trim()));
+        this.setRA(new BigDecimal(properties[1].trim()));
+        this.setDeclination(new BigDecimal(properties[2].trim()));
+        this.setMagnitude(new BigDecimal(properties[3].trim()));
+        this.setDistanceFromEarth(new BigDecimal(properties[4].trim()));
     }
 
     ;

@@ -2,12 +2,7 @@ package assignment03;
 
 import assignment03.model.AstronomicalObject;
 
-import java.beans.IntrospectionException;
-import java.beans.PropertyDescriptor;
 import java.io.*;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.List;
 
 /**
@@ -53,23 +48,19 @@ public class FormattedFileRead<T extends AstronomicalObject> {
                 t.setProperties(getSplit(line));
                 list.add(t);
             }
-        } catch (IllegalAccessException e) {
-            System.err.println("read file failed, please check the content of your file");
-            System.err.println(e.getMessage());
-            System.exit(0);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            ExceptionUtil.exceptionExit(e, "please check the content of your file");
+        } catch (NumberFormatException | IllegalAccessException e) {
+            ExceptionUtil.exceptionExit(e, "read file failed, please check the content of your file");
         } catch (InstantiationException e) {
-            System.err.println("unmatched class type, please check the type of class is according to your file content");
-            System.err.println(e.getMessage());
-            System.exit(0);
+            ExceptionUtil.exceptionExit(e, "unmatched class type, please check the type of class is according to your file content");
         } catch (IOException e) {
-            System.err.println("read file failed, please check the format of your file");
-            System.err.println(e.getMessage());
-            System.exit(0);
+            ExceptionUtil.exceptionExit(e, "read file failed, please check the format of your file");
         } finally {
             try {
                 fileReader.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                ExceptionUtil.exceptionExit(e, "reader close exception");
             }
         }
     }
@@ -85,52 +76,9 @@ public class FormattedFileRead<T extends AstronomicalObject> {
             if (line.contains("|")) {
                 lineSeparator = "\\|";
             } else {
-                lineSeparator = "\\s";
+                lineSeparator = "\\s+";
             }
         }
         return line.split(lineSeparator);
     }
-
-
-
-    /*public void readFileToListByProperties(List<T> list, Class<T> clazz) {
-        String line = null;
-        Field[] fields = clazz.getDeclaredFields();
-        PropertyDescriptor[] propertyDescriptors = new PropertyDescriptor[fields.length];
-        Method[] methods = new Method[fields.length];
-
-        for (int i = 0; i < fields.length; i++) {
-            String name = fields[i].getName();
-
-            PropertyDescriptor propertyDescriptor = null;
-            try {
-                propertyDescriptor = new PropertyDescriptor(name, clazz);
-            } catch (IntrospectionException e) {
-                e.printStackTrace();
-            }
-            Method writeMethod = propertyDescriptor.getWriteMethod();
-            methods[i] = writeMethod;
-        }
-
-        try {
-            while ((line = fileReader.readLine()) != null) {
-                T t = clazz.newInstance();
-                String[] split = line.split("\\|");
-                for (int i = 0; i < split.length; i++) {
-                    Class<?>[] parameterTypes = methods[i].getParameterTypes();
-                    Object cast = parameterTypes[0].cast(split[i].trim());
-                    methods[i].invoke(t, cast);
-                }
-                list.add(t);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        }
-    }*/
 }
