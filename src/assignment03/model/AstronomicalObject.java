@@ -57,7 +57,4 @@ public class AstronomicalObject {
         this.setMagnitude(new BigDecimal(properties[3].trim()));
         this.setDistanceFromEarth(new BigDecimal(properties[4].trim()));
     }
-
-    ;
-
 }

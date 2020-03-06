@@ -14,6 +14,8 @@ import java.util.*;
 
 /**
  * Reading file and store data.
+ *
+ * @author ZQJ
  */
 public class AOB {
 
@@ -86,24 +88,12 @@ public class AOB {
         //the fainter an object is, the higher its magnitude
         statisticsResult.add(getFaintestStars());
         //save all constellations into map and record the number of their members
-        Map<String, Integer> constellationMap = new HashMap<>();
+        Map<String, Integer> constellationMap = new HashMap<>(starList.size() >>> 2);
         countMembersOfConstellation(constellationMap);
-        //use the number of members as key, copy constellationMap into TreeMap.
-        TreeMap<Integer, List<String>> memberCountMap = new TreeMap<>();
-        // the constellations have the same number of members will be saved in the same list
-        constellationMap.forEach((constellation, memberCount) -> {
-            List<String> constellationList = memberCountMap.get(memberCount);
-            if (constellationList == null) {
-                constellationList = new ArrayList<>();
-            }
-            constellationList.add(constellation);
-            memberCountMap.put(memberCount, constellationList);
-        });
         //Q9. How many constellations are there?
-        Integer maxMemberCount = memberCountMap.lastKey();
         statisticsResult.add(constellationMap.size() + "");
         //Q10. Which constellation has the largest number of members?
-        String q10AnswerStr = getConstellationsWithMaxMembers(memberCountMap.get(maxMemberCount));
+        String q10AnswerStr = getConstellationsWithMaxMembers(constellationMap);
         statisticsResult.add(q10AnswerStr);
     }
 
@@ -123,10 +113,21 @@ public class AOB {
     /**
      * get constellations which have the most members
      *
-     * @param maxMemberConstellations the list consists of constellations‘ names which have the most members
+     * @param map the map of Constellations' statistics information
      * @return formatted answer of Q10
      */
-    private String getConstellationsWithMaxMembers(List<String> maxMemberConstellations) {
+    private String getConstellationsWithMaxMembers(Map<String, Integer> map) {
+        ArrayList<String> maxMemberConstellations = new ArrayList<>();
+        int max = 0;
+        for (Map.Entry<String, Integer> entry : map.entrySet()) {
+            if (max < entry.getValue()) {
+                max = entry.getValue();
+                maxMemberConstellations.clear();
+                maxMemberConstellations.add(entry.getKey());
+            } else if (max == entry.getValue()) {
+                maxMemberConstellations.add(entry.getKey());
+            }
+        }
         StringBuilder q10Answer = new StringBuilder();
         for (String str : maxMemberConstellations) {
             q10Answer.append(str).append(",");
