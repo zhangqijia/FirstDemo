@@ -1,9 +1,9 @@
 package assignment03;
 
 /**
- * USER: ZQJ
- * DATE: 3/4/2020
+ * @date 3/4/2020
  * TIME: 8:12 PM
+ * @author ZQJ
  */
 public class ExceptionUtil {
     /**
