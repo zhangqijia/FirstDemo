@@ -1,6 +1,5 @@
 package assignment03.model;
 
-import java.math.BigDecimal;
 import java.util.Objects;
 
 public class Star extends AstronomicalObject {

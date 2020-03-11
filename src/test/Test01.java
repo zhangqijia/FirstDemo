@@ -1,6 +1,7 @@
 package test;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 
 /**
  * USER: ZQJ
@@ -10,8 +11,8 @@ import java.math.BigDecimal;
 public class Test01 {
 
     public static void main(String[] args) {
-        BigDecimal bigDecimal1 = new BigDecimal("650000000.0");
-        BigDecimal bigDecimal2 = new BigDecimal("650000000.00");
-        System.out.println(bigDecimal1.equals(bigDecimal2));
+       String s = "booo:and:fooo";
+        String[] os = s.split("o", 0);
+        System.out.println(Arrays.toString(os));
     }
 }

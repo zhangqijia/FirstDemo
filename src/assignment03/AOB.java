@@ -19,6 +19,9 @@ import java.util.*;
  */
 public class AOB {
 
+    public static final String DISTANCE_FROM_EARTH = "distanceFromEarth";
+    public static final String MAGNITUDE = "magnitude";
+
     /**
      * all stars
      */
@@ -73,20 +76,15 @@ public class AOB {
         //Q5. Which object is furthest from the Earth?
         statisticsResult.add(getFurthestObjects());
         //Q6. Which is the nearest star?
-        statisticsResult.add(getNearestStar());
+        statisticsResult.add(getElementsWithSamePropertyFromList(starList, DISTANCE_FROM_EARTH, true));
         // sort starList in ascending order of magnitude
-        starList.sort(new Comparator<Star>() {
-            @Override
-            public int compare(Star o1, Star o2) {
-                return o1.getMagnitude().compareTo(o2.getMagnitude());
-            }
-        });
+        starList.sort(Comparator.comparing(AstronomicalObject::getMagnitude));
         //Q7. Which is the brightest star?
         //the brighter an object is, the lower its magnitude
-        statisticsResult.add(getBrightestStars());
+        statisticsResult.add(getElementsWithSamePropertyFromList(starList, MAGNITUDE, true));
         //Q8. Which is the faintest star?
         //the fainter an object is, the higher its magnitude
-        statisticsResult.add(getFaintestStars());
+        statisticsResult.add(getElementsWithSamePropertyFromList(starList, MAGNITUDE, false));
         //save all constellations into map and record the number of their members
         Map<String, Integer> constellationMap = new HashMap<>(starList.size() >>> 2);
         countMembersOfConstellation(constellationMap);
@@ -120,6 +118,7 @@ public class AOB {
         ArrayList<String> maxMemberConstellations = new ArrayList<>();
         int max = 0;
         for (Map.Entry<String, Integer> entry : map.entrySet()) {
+            // find a bigger number, clear the List and update max
             if (max < entry.getValue()) {
                 max = entry.getValue();
                 maxMemberConstellations.clear();
@@ -149,50 +148,14 @@ public class AOB {
             oldVal++;
             constellationMap.put(star.getConstellation(), oldVal);
         });
-        messierList.forEach(star -> {
-            Integer oldVal = constellationMap.get(star.getConstellation());
+        messierList.forEach(messier -> {
+            Integer oldVal = constellationMap.get(messier.getConstellation());
             if (oldVal == null) {
                 oldVal = 0;
             }
             oldVal++;
-            constellationMap.put(star.getConstellation(), oldVal);
+            constellationMap.put(messier.getConstellation(), oldVal);
         });
-    }
-
-    /**
-     * @return the faintest Stars' names
-     */
-    private String getFaintestStars() {
-        StringBuilder q8Answer = new StringBuilder();
-        List<Star> faintestStars = getElementsWithSamePropertyFromList(starList, "magnitude", false);
-        for (Star starCandidate : faintestStars) {
-            q8Answer.append(starCandidate.getCatalogueNumber()).append(",");
-        }
-        return q8Answer.substring(0, q8Answer.length() - 1);
-    }
-
-    /**
-     * @return the brightest Stars' names
-     */
-    private String getBrightestStars() {
-        StringBuilder q7Answer = new StringBuilder();
-        List<Star> brightestStars = getElementsWithSamePropertyFromList(starList, "magnitude", true);
-        for (Star starCandidate : brightestStars) {
-            q7Answer.append(starCandidate.getCatalogueNumber()).append(",");
-        }
-        return q7Answer.substring(0, q7Answer.length() - 1);
-    }
-
-    /**
-     * @return the nearest stars' names
-     */
-    private String getNearestStar() {
-        StringBuilder q6Answer = new StringBuilder();
-        List<Star> nearestStars = getElementsWithSamePropertyFromList(starList, "distanceFromEarth", true);
-        for (Star starCandidate : nearestStars) {
-            q6Answer.append(starCandidate.getCatalogueNumber()).append(",");
-        }
-        return q6Answer.substring(0, q6Answer.length() - 1);
     }
 
     /**
@@ -207,23 +170,15 @@ public class AOB {
         // find the nearest distance among three types of objects
         BigDecimal maxDistance = maxStarDistance.max(maxPlanetDistance.max(maxMessierDistance));
         // check whether other objects have the same max distance exist.
+        // Use compareTo() because equal() considers two BigDecimal objects equal only if they are equal in value and scale, 2.0 2.00
         if (maxDistance.compareTo(maxPlanetDistance) == 0) {
-            List<Planet> planetCandidates = getElementsWithSamePropertyFromList(planetList, "distanceFromEarth", false);
-            for (Planet starCandidate : planetCandidates) {
-                q5Answer.append(starCandidate.getName()).append(",");
-            }
+            q5Answer.append(getElementsWithSamePropertyFromList(planetList, DISTANCE_FROM_EARTH, false)).append(",");
         }
         if (maxDistance.compareTo(maxStarDistance) == 0) {
-            List<Star> starCandidates = getElementsWithSamePropertyFromList(starList, "distanceFromEarth", false);
-            for (Star starCandidate : starCandidates) {
-                q5Answer.append(starCandidate.getCatalogueNumber()).append(",");
-            }
+            q5Answer.append(getElementsWithSamePropertyFromList(starList, DISTANCE_FROM_EARTH, false)).append(",");
         }
         if (maxDistance.compareTo(maxMessierDistance) == 0) {
-            List<Messier> messierCandidates = getElementsWithSamePropertyFromList(messierList, "distanceFromEarth", false);
-            for (Messier starCandidate : messierCandidates) {
-                q5Answer.append(starCandidate.getCatalogueNumber()).append(",");
-            }
+            q5Answer.append(getElementsWithSamePropertyFromList(messierList, DISTANCE_FROM_EARTH, false)).append(",");
         }
         return q5Answer.substring(0, q5Answer.length() - 1);
     }
@@ -243,22 +198,13 @@ public class AOB {
         BigDecimal minDistance = minStarDistance.min(minPlanetDistance.min(minMessierDistance));
         // check whether other objects have the same min distance exist.
         if (minDistance.compareTo(minPlanetDistance) == 0) {
-            List<Planet> planetCandidates = getElementsWithSamePropertyFromList(planetList, "distanceFromEarth", true);
-            for (Planet starCandidate : planetCandidates) {
-                q4Answer.append(starCandidate.getName()).append(",");
-            }
+            q4Answer.append(getElementsWithSamePropertyFromList(planetList, DISTANCE_FROM_EARTH, true)).append(",");
         }
         if (minDistance.compareTo(minStarDistance) == 0) {
-            List<Star> starCandidates = getElementsWithSamePropertyFromList(starList, "distanceFromEarth", true);
-            for (Star starCandidate : starCandidates) {
-                q4Answer.append(starCandidate.getCatalogueNumber()).append(",");
-            }
+            q4Answer.append(getElementsWithSamePropertyFromList(starList, DISTANCE_FROM_EARTH, true)).append(",");
         }
         if (minDistance.compareTo(minMessierDistance) == 0) {
-            List<Messier> messierCandidates = getElementsWithSamePropertyFromList(messierList, "distanceFromEarth", true);
-            for (Messier starCandidate : messierCandidates) {
-                q4Answer.append(starCandidate.getCatalogueNumber()).append(",");
-            }
+            q4Answer.append(getElementsWithSamePropertyFromList(messierList, DISTANCE_FROM_EARTH, true)).append(",");
         }
         return q4Answer.substring(0, q4Answer.length() - 1);
     }
@@ -269,55 +215,64 @@ public class AOB {
      * @param list         ascending sorted list
      * @param propertyName the property name
      * @param fromStart    if true, this method get elements from start, otherwise from end
-     * @return elements have the same property value
+     * @return String consists of names or CatalogueNumbers of elements which have the same value for assigned property
      */
-    private <T extends AstronomicalObject> List<T> getElementsWithSamePropertyFromList(List<T> list, String propertyName, boolean fromStart) {
-        List<T> tList = new ArrayList<>();
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    private <T extends AstronomicalObject> String getElementsWithSamePropertyFromList(List<T> list, String propertyName, boolean fromStart) {
+        List<T> answerList = new ArrayList<>();
         int startIndex;
-        // if from the head, use the first element as criterion, otherwise, use the last
+        // if from the head, use the first element's property value as criterion, otherwise, use the last
         if (fromStart) {
             startIndex = 0;
         } else {
             startIndex = list.size() - 1;
         }
         T t = list.get(startIndex);
-        tList.add(t);
+        answerList.add(t);
         PropertyDescriptor descriptor = null;
         Method readMethod = null;
-        Object extremeValue = null;
+        Comparable extremeValue = null;
         T other;
         try {
             //get the read method of specific property
             descriptor = new PropertyDescriptor(propertyName, t.getClass());
             readMethod = descriptor.getReadMethod();
-            // get the min/max value of this property
-            extremeValue = readMethod.invoke(t);
-            // if other objects has the same property, add to return list.
+            // get the min/max value of this property (first/last element's property value)
+            extremeValue = (Comparable) readMethod.invoke(t);
+            // if other objects has the same property, add to answer list.
             if (fromStart) {
                 for (int i = 1; i < list.size(); i++) {
                     other = list.get(i);
                     Object property = readMethod.invoke(other);
-                    if (extremeValue.equals(property)) {
-                        tList.add(other);
+                    if (extremeValue.compareTo(property) == 0) {
+                        answerList.add(other);
                     } else {
-                        return tList;
+                        // find different value, stop loop;
+                        break;
                     }
                 }
             } else {
                 for (int i = list.size() - 2; i >= 0; i--) {
                     other = list.get(i);
                     Object property = readMethod.invoke(other);
-                    if (extremeValue.equals(property)) {
-                        tList.add(other);
+                    if (extremeValue.compareTo(property) == 0) {
+                        answerList.add(other);
                     } else {
-                        return tList;
+                        break;
                     }
                 }
             }
         } catch (IntrospectionException | IllegalAccessException | InvocationTargetException e) {
-            ExceptionUtil.exceptionExit(e, "failed to compare the value of " + propertyName);
+            ExceptionUtil.exceptionExit(e, "failed to compare the value of:" + propertyName);
+        } catch (ClassCastException e) {
+            ExceptionUtil.exceptionExit(e, "this property cannot be compared:" + propertyName);
         }
-        return tList;
+        // format answerList to String
+        StringBuilder stringBuilder = new StringBuilder();
+        for (T starCandidate : answerList) {
+            stringBuilder.append(starCandidate.getCatalogueNumberOrName()).append(",");
+        }
+        return stringBuilder.substring(0, stringBuilder.length() - 1);
     }
 
     /**
@@ -327,8 +282,7 @@ public class AOB {
      */
     private void readFilesToList(String[] fileNames) {
         if (fileNames.length < 3) {
-            System.err.println("you should give 3 formatted files");
-            System.exit(0);
+            ExceptionUtil.exceptionExit(new Exception("ArgumentsException"), "you should give 3 formatted files");
         }
         // create FileReaderTool instances and read files into different lists according to astronomical type.
         FormattedFileRead<Star> starFileRead = new FormattedFileRead<>(fileNames[0]);
@@ -344,11 +298,10 @@ public class AOB {
      *
      * @param <T>
      */
-    class DistanceComparator<T extends AstronomicalObject> implements Comparator<T> {
+    static class DistanceComparator<T extends AstronomicalObject> implements Comparator<T> {
         @Override
         public int compare(T o1, T o2) {
             return o1.getDistanceFromEarth().compareTo(o2.getDistanceFromEarth());
         }
     }
-
 }

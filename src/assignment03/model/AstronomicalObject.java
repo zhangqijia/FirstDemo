@@ -57,4 +57,14 @@ public class AstronomicalObject {
         this.setMagnitude(new BigDecimal(properties[3].trim()));
         this.setDistanceFromEarth(new BigDecimal(properties[4].trim()));
     }
+
+    public String getCatalogueNumberOrName() {
+        if (this instanceof Planet) {
+            return ((Planet) this).getName();
+        } else if (this instanceof Messier) {
+            return ((Messier) this).getCatalogueNumber() + "";
+        } else {
+            return ((Star) this).getCatalogueNumber() + "";
+        }
+    }
 }

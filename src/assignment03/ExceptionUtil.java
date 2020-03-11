@@ -14,7 +14,7 @@ public class ExceptionUtil {
      */
     public static void exceptionExit(Exception e, String prompt) {
         System.err.println(prompt);
-        System.err.println(e.getMessage());
+        System.err.println(e.toString());
         System.exit(0);
     }
 }
