@@ -1,4 +1,4 @@
-package assignment03.model;
+package stage.model;
 
 import java.math.BigDecimal;
 import java.util.Objects;

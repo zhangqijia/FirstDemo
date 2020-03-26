@@ -1,0 +1,8 @@
+select messiers where ra < 40
+select stars where distance > 1000 and magn >= 5.93
+select stars where distance > 1000 and constellation = Aqr
+select messiers where distance = 60000000.0 and decl <= 8 and decl > 3
+select planets
+select stars where ra > 60 and ra < 270 and decl < 10 and decl > 3
+select messiers where distance = 2900000.0
+select planets where albedo < 0.6

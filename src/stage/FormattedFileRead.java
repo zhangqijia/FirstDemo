@@ -1,6 +1,6 @@
-package assignment03;
+package stage;
 
-import assignment03.model.AstronomicalObject;
+import stage.model.AstronomicalObject;
 
 import java.io.*;
 import java.util.List;

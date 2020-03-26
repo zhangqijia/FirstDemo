@@ -1,12 +1,16 @@
-package assignment03;
+package stage;
 
-import assignment03.model.AstronomicalObject;
-import assignment03.model.Messier;
-import assignment03.model.Planet;
-import assignment03.model.Star;
+import stage.exception.SyntaxIllegalException;
+import stage.model.AstronomicalObject;
+import stage.model.Messier;
+import stage.model.Planet;
+import stage.model.Star;
+import stage.query.QueryResults;
+import stage.query.QueryRunner;
 
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
+import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
@@ -52,6 +56,44 @@ public class AOB {
         aob.getSummaryStatistics();
         // printout answers
         System.out.println(aob);
+        // execute queries
+        if (args.length > 3) {
+            aob.readQueryFile(args[3]);
+        }
+    }
+
+    /**
+     * execute query file
+     *
+     * @param filepath query file path
+     */
+    private void readQueryFile(String filepath) {
+        BufferedReader bufferedReader = null;
+        QueryResults results = null;
+        try {
+            bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(filepath)));
+            String line = null;
+            while ((line = bufferedReader.readLine()) != null) {
+                try {
+                    results = QueryRunner.run(line, this);
+                } catch (IllegalAccessException | IntrospectionException | InvocationTargetException e) {
+                    System.out.println(e.getMessage() + " " + line);
+                } catch (SyntaxIllegalException e) {
+                    System.out.println(e.getMessage());
+                }
+                if (results != null) {
+                    System.out.println(results);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println(e.getMessage() + "fail to read query file");
+        } finally {
+            try {
+                bufferedReader.close();
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
+        }
     }
 
     /**
@@ -303,5 +345,17 @@ public class AOB {
         public int compare(T o1, T o2) {
             return o1.getDistanceFromEarth().compareTo(o2.getDistanceFromEarth());
         }
+    }
+
+    public List<Star> getStarList() {
+        return starList;
+    }
+
+    public List<Planet> getPlanetList() {
+        return planetList;
+    }
+
+    public List<Messier> getMessierList() {
+        return messierList;
     }
 }

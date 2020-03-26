@@ -1,4 +1,4 @@
-package assignment03.model;
+package stage.model;
 
 import java.util.Objects;
 
