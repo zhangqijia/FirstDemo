@@ -101,6 +101,7 @@ public class QueryRunner {
      * @param <T>        the type of list element
      * @return
      */
+    @SuppressWarnings({"unchecked", "rawtypes"})
     private static <T> QueryResults invokeQuery(List<T> objectList, ArrayList<Criterion> queries, Class<?> tClass) throws IntrospectionException, InvocationTargetException, IllegalAccessException {
         PropertyDescriptor propertyDescriptor;
         // use every query to filter resultList

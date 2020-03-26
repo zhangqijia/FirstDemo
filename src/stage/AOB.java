@@ -89,7 +89,9 @@ public class AOB {
             System.out.println(e.getMessage() + "fail to read query file");
         } finally {
             try {
-                bufferedReader.close();
+                if (bufferedReader != null) {
+                    bufferedReader.close();
+                }
             } catch (IOException e) {
                 System.out.println(e.getMessage());
             }
