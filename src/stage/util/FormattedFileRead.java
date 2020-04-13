@@ -1,15 +1,17 @@
-package stage;
+package stage.util;
 
 import stage.model.AstronomicalObject;
+import stage.util.PrintUtil;
 
 import java.io.*;
 import java.util.List;
 
 /**
  * Read formatted Files
- * USER: ZQJ
  * DATE: 2/23/2020
  * TIME: 5:59 PM
+ *
+ * @author ZQJ
  */
 public class FormattedFileRead<T extends AstronomicalObject> {
 
@@ -27,7 +29,7 @@ public class FormattedFileRead<T extends AstronomicalObject> {
         try {
             fileReader = new BufferedReader(new InputStreamReader(new FileInputStream(filename)));
         } catch (FileNotFoundException e) {
-            ExceptionUtil.exceptionExit(e, "Read file failed");
+            PrintUtil.printExceptionAndExit(e, "Read file failed");
         }
     }
 
@@ -49,18 +51,18 @@ public class FormattedFileRead<T extends AstronomicalObject> {
                 lineNum++;
             }
         } catch (ArrayIndexOutOfBoundsException e) {
-            ExceptionUtil.exceptionExit(e, "please check the content of your file, lineNum: " + lineNum);
+            PrintUtil.printExceptionAndExit(e, "please check the content of your file, lineNum: " + lineNum);
         } catch (NumberFormatException | IllegalAccessException e) {
-            ExceptionUtil.exceptionExit(e, "read file failed, please check the content of your file, lineNum: " + lineNum);
+            PrintUtil.printExceptionAndExit(e, "read file failed, please check the content of your file, lineNum: " + lineNum);
         } catch (InstantiationException e) {
-            ExceptionUtil.exceptionExit(e, "unmatched class type, please check the type of class is according to your file content, lineNum: " + lineNum);
+            PrintUtil.printExceptionAndExit(e, "unmatched class type, please check the type of class is according to your file content, lineNum: " + lineNum);
         } catch (IOException e) {
-            ExceptionUtil.exceptionExit(e, "read file failed, please check the format of your file, lineNum: " + lineNum);
+            PrintUtil.printExceptionAndExit(e, "read file failed, please check the format of your file, lineNum: " + lineNum);
         } finally {
             try {
                 fileReader.close();
             } catch (IOException e) {
-                ExceptionUtil.exceptionExit(e, "reader close exception");
+                PrintUtil.printExceptionAndExit(e, "reader close exception");
             }
         }
     }
