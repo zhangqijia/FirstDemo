@@ -1,7 +1,5 @@
 package stage.query;
 
-import static stage.model.DataStore.*;
-
 import stage.exception.SyntaxIllegalException;
 import stage.model.Messier;
 import stage.model.Planet;
@@ -13,10 +11,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static stage.model.DataStore.*;
 
 /**
  * @author ZQJ
