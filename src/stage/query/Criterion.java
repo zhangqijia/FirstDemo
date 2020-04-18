@@ -9,6 +9,11 @@ public class Criterion {
     private String symbol;
     private String value;
 
+    public Criterion(String key, String symbol) {
+        this.key = key;
+        this.symbol = symbol;
+    }
+
     public Criterion(String key, String symbol, String value) {
         this.key = key;
         this.symbol = symbol;

@@ -13,7 +13,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author ZQJ
@@ -27,15 +30,8 @@ public class QueryRunner {
      * the index of 'where' in query string array
      */
     public static final int INDEX_WHERE = 2;
-    /**
-     * the index of first 'and' in query string array
-     */
-    public static final int INDEX_FIRST_AND = 6;
-    /**
-     * the number of words in per criterion.
-     * e.g. 'and a > 100'
-     */
-    public static final int LENGTH_CRITERION = 4;
+
+    static Pattern pattern = Pattern.compile("[\\w\\s]+\\W+[\\w\\s.]+");
 
     /**
      * execute one query sentence.
@@ -44,11 +40,42 @@ public class QueryRunner {
      * @param queryStr query sentence
      * @return the result which contains a answer list
      */
-    public static QueryResults run(String queryStr) throws IllegalAccessException, IntrospectionException, InvocationTargetException, SyntaxIllegalException {
+    public static QueryResults run(String queryStr) throws IllegalAccessException,
+            IntrospectionException, InvocationTargetException, SyntaxIllegalException {
         QueryResults queryResults = null;
         ArrayList<Criterion> queries = new ArrayList<>();
         // split this query sentence by whitespaces
         String[] strArray = queryStr.split("\\s+");
+        // verify query syntax
+        verifyQuerySyntax(queryStr, queries, strArray);
+        // execute the query
+        switch (strArray[1]) {
+            case "stars":
+                queryResults = invokeQuery(STAR_LIST, queries, Star.class);
+                break;
+            case "messiers":
+                queryResults = invokeQuery(MESSIER_LIST, queries, Messier.class);
+                break;
+            case "planets":
+                queryResults = invokeQuery(PLANET_LIST, queries, Planet.class);
+                break;
+            default:
+                break;
+        }
+        return queryResults;
+    }
+
+    /**
+     * verify query sentences syntax
+     * 1. doesn't contain description
+     * 2. contain description
+     *
+     * @param queryStr query string
+     * @param queries  list used to store query criteria
+     * @param strArray String array which contains all words in query string
+     * @throws SyntaxIllegalException if the query sentence doesn't meet syntax demands, throw out exception
+     */
+    private static void verifyQuerySyntax(String queryStr, ArrayList<Criterion> queries, String[] strArray) throws SyntaxIllegalException {
         // verify key words in the query sentence
         if (!SELECT.equals(strArray[0])) {
             throw new SyntaxIllegalException(queryStr);
@@ -69,48 +96,42 @@ public class QueryRunner {
            NB: 'where' should appear once at where index=2; 'and' should appear at where index=6+4k, k=1,2,...n-1;
            2. Array length = 2;
            this is no criteria. For this situation, program has checked typeName and keyword 'select'.
+           3. Array contains "description".
+           For 1,3, split criteria by 'and', then check the structure of every criterion. They should meet this
+           "[\w\s]+\W+[\w\s.]+" regex expression. One arithmetic symbol between two character sequences.
         */
-        if (strArrayLength > INDEX_FIRST_AND) {
-            if ((strArrayLength - INDEX_FIRST_AND) % LENGTH_CRITERION != 0) {
-                throw new SyntaxIllegalException(queryStr);
-            }
-            for (int i = 6; i < strArrayLength; i += INDEX_FIRST_AND) {
-                if (!"and".equals(strArray[i])) {
-                    throw new SyntaxIllegalException(queryStr);
-                }
-            }
-        }
-        // check and extract criteria
         if (strArrayLength > INDEX_WHERE) {
+            // check spell of 'where'
             if (!WHERE.equals(strArray[INDEX_WHERE])) {
                 throw new SyntaxIllegalException(queryStr);
             }
-            // check criterion (propertyName and symbol) by pre-defined data table
-            for (int i = 3; i < strArrayLength; i += LENGTH_CRITERION) {
-                String property = ConstantMap.getProperty(objectName, strArray[i]);
-                String symbol = ConstantMap.getSymbol(strArray[i + 1]);
-                if (property != null && symbol != null) {
-                    queries.add(new Criterion(property, symbol, strArray[i + 2]));
-                } else {
+            int whereIndex = queryStr.indexOf("where");
+            // get criteria from query and split it by 'and'
+            String criteriaStr = queryStr.substring(whereIndex + 6).trim();
+            String[] criteriaStrArr = criteriaStr.split("and\\s+");
+            for (String criterionStr : criteriaStrArr) {
+                // check every criterion's structure
+                Matcher matcher = pattern.matcher(criterionStr);
+                if (!matcher.matches()) {
+                    throw new SyntaxIllegalException(criterionStr);
+                }
+                // split criterion string at the index of first space to get property name
+                int firstSpace = criterionStr.indexOf(" ");
+                String property = criterionStr.substring(0, firstSpace);
+                // get arithmetic symbol
+                int secondSpace = criterionStr.indexOf(" ", firstSpace + 1);
+                String symbol = criterionStr.substring(firstSpace, secondSpace);
+                // check property name and symbol  according predefined data map
+                property = ConstantMap.getProperty(objectName, property.trim());
+                symbol = ConstantMap.getSymbol(symbol.trim());
+                if (property == null || symbol == null) {
                     throw new SyntaxIllegalException(queryStr);
                 }
+                String value = criterionStr.substring(secondSpace).trim();
+                // create new criterion and add into queries
+                queries.add(new Criterion(property, symbol, value));
             }
         }
-        // execute the query
-        switch (objectName) {
-            case "stars":
-                queryResults = invokeQuery(STAR_LIST, queries, Star.class);
-                break;
-            case "messiers":
-                queryResults = invokeQuery(MESSIER_LIST, queries, Messier.class);
-                break;
-            case "planets":
-                queryResults = invokeQuery(PLANET_LIST, queries, Planet.class);
-                break;
-            default:
-                break;
-        }
-        return queryResults;
     }
 
     /**
@@ -123,7 +144,8 @@ public class QueryRunner {
      * @return queryResults
      */
     @SuppressWarnings({"unchecked", "rawtypes"})
-    private static <T> QueryResults invokeQuery(List<T> objectList, ArrayList<Criterion> queries, Class<?> tClass) throws IntrospectionException, InvocationTargetException, IllegalAccessException {
+    private static <T> QueryResults invokeQuery(List<T> objectList, ArrayList<Criterion> queries, Class<?> tClass)
+            throws IntrospectionException, InvocationTargetException, IllegalAccessException {
         PropertyDescriptor propertyDescriptor;
         // use every criterion to filter resultList
         for (Criterion query : queries) {
