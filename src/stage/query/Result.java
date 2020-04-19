@@ -2,6 +2,7 @@ package stage.query;
 
 import stage.model.AstronomicalObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,9 +14,15 @@ public class Result<T extends AstronomicalObject> implements QueryResults {
 
     private List<T> list;
     private ArrayList<String> idList;
+    private Exception exception;
 
     public Result(List<T> list) {
         this.list = list;
+    }
+
+    @Override
+    public void setException(Exception exception) {
+        this.exception = exception;
     }
 
     @Override
@@ -44,6 +51,8 @@ public class Result<T extends AstronomicalObject> implements QueryResults {
             }
         }
         sb.append(" ]");
+        String s = exception == null ? " " : exception.toString();
+        System.out.println(s);
         return sb.toString();
     }
 }

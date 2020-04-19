@@ -22,6 +22,6 @@ public class AOB {
         Handler stage2Handler = new Stage2Handler();
         stage2Handler.execute(args);
         long end = System.currentTimeMillis();
-        System.out.println(end - l);
+        System.out.println("---------------------" + (end - l));
     }
 }

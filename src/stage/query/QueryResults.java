@@ -10,4 +10,6 @@ public interface QueryResults {
 
     public ArrayList<String> getIDs();
 
+    public void setException(Exception e);
+
 }
