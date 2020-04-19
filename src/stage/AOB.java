@@ -17,8 +17,11 @@ public class AOB {
         // execute stage1's task and print out answers
         Handler stage1Handler = new Stage1Handler();
         stage1Handler.execute(args);
+        long l = System.currentTimeMillis();
         // execute stage2's task
         Handler stage2Handler = new Stage2Handler();
         stage2Handler.execute(args);
+        long end = System.currentTimeMillis();
+        System.out.println(end - l);
     }
 }

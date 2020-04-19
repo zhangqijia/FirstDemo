@@ -30,7 +30,7 @@ public class QueryRunner {
      */
     public static final int INDEX_WHERE = 2;
 
-    static Pattern pattern = Pattern.compile("[\\w\\s]+\\W+[\\w\\s.]+");
+    static final Pattern PATTERN = Pattern.compile("[\\w\\s]+\\W+[\\w\\s.]+");
 
     /**
      * execute one query sentence.
@@ -110,7 +110,7 @@ public class QueryRunner {
             String[] criteriaStrArr = criteriaStr.split("and\\s+");
             for (String criterionStr : criteriaStrArr) {
                 // check every criterion's structure
-                Matcher matcher = pattern.matcher(criterionStr);
+                Matcher matcher = PATTERN.matcher(criterionStr);
                 if (!matcher.matches()) {
                     throw new SyntaxIllegalException(criterionStr);
                 }

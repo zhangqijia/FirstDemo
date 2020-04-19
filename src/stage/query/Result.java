@@ -35,6 +35,7 @@ public class Result<T extends AstronomicalObject> implements QueryResults {
         if (idList == null) {
             getIDs();
         }
+        sb.append("[ ");
         for (int i = 0; i < idList.size(); i++) {
             if (i == idList.size() - 1) {
                 sb.append(idList.get(i));
@@ -42,9 +43,7 @@ public class Result<T extends AstronomicalObject> implements QueryResults {
                 sb.append(idList.get(i)).append(", ");
             }
         }
-        if (sb.length() == 0) {
-            sb.append("null");
-        }
+        sb.append(" ]");
         return sb.toString();
     }
 }
